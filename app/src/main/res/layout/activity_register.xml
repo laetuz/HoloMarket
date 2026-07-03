@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_width="match_parent"
@@ -39,6 +40,8 @@
         android:hint="Password"
         android:singleLine="true"
         android:inputType="textPassword"
+        android:drawableRight="@drawable/ic_eye_closed"
+        android:drawablePadding="8dp"
         android:layout_marginBottom="24dp" />
 
     <Button

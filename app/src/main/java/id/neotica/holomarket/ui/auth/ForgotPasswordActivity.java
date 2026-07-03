@@ -3,7 +3,9 @@ package id.neotica.holomarket.ui.auth;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -40,6 +42,15 @@ public class ForgotPasswordActivity extends Activity {
             @Override
             public void onClick(View v) {
                 performForgotPassword();
+            }
+        });
+
+        findViewById(R.id.layout_root).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                return false;
             }
         });
     }

@@ -1,9 +1,13 @@
 package id.neotica.holomarket.ui.auth;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -36,10 +40,40 @@ public class RegisterActivity extends Activity {
         etPassword = (EditText) findViewById(R.id.et_register_password);
         btnRegister = (Button) findViewById(R.id.btn_register);
 
+        etPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    Drawable drawableRight = etPassword.getCompoundDrawables()[2];
+                    if (drawableRight != null && event.getRawX() >= (etPassword.getRight() - drawableRight.getBounds().width() - etPassword.getPaddingRight())) {
+                        if (etPassword.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                            etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                            etPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_open, 0);
+                        } else {
+                            etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            etPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_closed, 0);
+                        }
+                        etPassword.setSelection(etPassword.getText().length());
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 performRegister();
+            }
+        });
+
+        findViewById(R.id.layout_root).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                return false;
             }
         });
     }

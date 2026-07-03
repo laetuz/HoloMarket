@@ -2,6 +2,8 @@
 .gradle
 .idea
 /local.properties
+AGENTS.md
+skills.md
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store

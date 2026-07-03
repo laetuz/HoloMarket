@@ -14,7 +14,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import id.neotica.holomarket.BuildConfig;
 import id.neotica.holomarket.R;
+import id.neotica.holomarket.network.ApiCallback;
+import id.neotica.holomarket.network.ApiTask;
+import id.neotica.holomarket.network.DownloadTask;
 import id.neotica.holomarket.ui.home.MainActivity;
 import id.neotica.holomarket.utils.AuthManager;
 import id.neotica.holomarket.utils.CrashCatcher;
@@ -107,5 +114,66 @@ public class SettingsActivity extends Activity {
                 finish();
             }
         });
+
+        Button btnCheckUpdate = (Button) findViewById(R.id.btn_check_update);
+        btnCheckUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkForUpdate();
+            }
+        });
+    }
+
+    private void checkForUpdate() {
+        String targetUrl = BuildConfig.BASE_URL + "/apps/id.neotica.holomarket/latest";
+
+        new ApiTask(this, "GET", targetUrl, null, "Checking for updates...", new ApiCallback() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject root = new JSONObject(response);
+                    int latestVersionCode = root.optInt("version_code", 0);
+                    String latestVersionName = root.optString("version_name", "");
+                    String fileUrl = root.optString("file_url", "");
+
+                    if (latestVersionCode == BuildConfig.VERSION_CODE) {
+                        new AlertDialog.Builder(SettingsActivity.this)
+                                .setTitle("Up to date")
+                                .setMessage("HoloMarket is up to date.")
+                                .setPositiveButton("OK", null)
+                                .show();
+                    } else if (latestVersionCode > BuildConfig.VERSION_CODE) {
+                        final String downloadUrl = BuildConfig.FILE_BASE_URL + fileUrl;
+                        final String fileName = "holomarket_v" + latestVersionName + ".apk";
+
+                        new AlertDialog.Builder(SettingsActivity.this)
+                                .setTitle("Update available")
+                                .setMessage("Version " + latestVersionName + " is available.")
+                                .setPositiveButton("Download", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        new DownloadTask(SettingsActivity.this, fileName).execute(downloadUrl);
+                                    }
+                                })
+                                .setNegativeButton("Cancel", null)
+                                .show();
+                    } else {
+                        new AlertDialog.Builder(SettingsActivity.this)
+                                .setTitle("Up to date")
+                                .setMessage("HoloMarket is up to date.")
+                                .setPositiveButton("OK", null)
+                                .show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(SettingsActivity.this, "Error checking for updates.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(SettingsActivity.this, "Failed to check for updates: " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        }).execute();
     }
 }
