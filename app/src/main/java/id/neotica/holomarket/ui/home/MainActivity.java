@@ -2,6 +2,7 @@ package id.neotica.holomarket.ui.home;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -53,24 +54,26 @@ public class MainActivity extends Activity {
         final Button btLogin = (Button) findViewById(R.id.btn_login);
         final AuthManager authManager = new AuthManager(this);
 
+        ImageView ivSettings = (ImageView) findViewById(R.id.iv_settings);
+        TypedArray ta = obtainStyledAttributes(new int[]{android.R.attr.textColorPrimary});
+        int tintColor = ta.getColor(0, 0xFF888888);
+        ta.recycle();
+        ivSettings.setColorFilter(tintColor);
+
         if (authManager.isLoggedIn()) {
             btLogin.setVisibility(View.GONE);
             tvTitle.setVisibility(View.VISIBLE);
+            ivSettings.setVisibility(View.VISIBLE);
             String username = authManager.getUsernameFromToken();
             if (username != null) {
                 tvTitle.setText("Welcome " + username + "!");
             } else {
                 tvTitle.setText("Welcome User!");
             }
-            tvTitle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                }
-            });
         } else {
             btLogin.setVisibility(View.VISIBLE);
             tvTitle.setVisibility(View.GONE);
+            ivSettings.setVisibility(View.GONE);
             btLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -111,6 +114,13 @@ public class MainActivity extends Activity {
                     intent.putExtra(INTENT_TOPIC, clickedApp);
                     startActivity(intent);
                 }
+            }
+        });
+
+        ivSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
             }
         });
 

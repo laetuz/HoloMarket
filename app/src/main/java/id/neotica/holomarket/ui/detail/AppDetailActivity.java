@@ -84,12 +84,11 @@ public class AppDetailActivity extends Activity {
                         fileName = "update_v" + latestVersion.versionCode + ".apk";
                     }
 
-                    Toast.makeText(AppDetailActivity.this, "Downloading v" + latestVersion.versionName + "...", Toast.LENGTH_SHORT).show();
-
                     AnalyticsTracker.track(AppDetailActivity.this, "download", "app_downloaded");
 
                     // start downloading.
-                    new DownloadTask(AppDetailActivity.this, fileName).execute(downloadUrl);
+                    String appTitle = tvTitle.getText().toString();
+                    new DownloadTask(AppDetailActivity.this, fileName, appTitle).execute(downloadUrl);
 
                 } else {
                     Toast.makeText(AppDetailActivity.this, "Download link not available for the latest version.", Toast.LENGTH_SHORT).show();
@@ -118,7 +117,8 @@ public class AppDetailActivity extends Activity {
                     AnalyticsTracker.track(AppDetailActivity.this, "download", "app_downloaded");
 
                     // start downloading.
-                    new DownloadTask(AppDetailActivity.this, fileName).execute(downloadUrl);
+                    String appTitle = tvTitle.getText().toString();
+                    new DownloadTask(AppDetailActivity.this, fileName, appTitle).execute(downloadUrl);
 
                 } else {
                     Toast.makeText(AppDetailActivity.this, "Download link not available for this version.", Toast.LENGTH_SHORT).show();

@@ -22,10 +22,16 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
     private Context context;
     private ProgressDialog progressDialog;
     private String fileName;
+    private String displayName;
 
     public DownloadTask(Context context, String fileName) {
+        this(context, fileName, null);
+    }
+
+    public DownloadTask(Context context, String fileName, String displayName) {
         this.context = context;
         this.fileName = fileName;
+        this.displayName = displayName;
     }
 
     @Override
@@ -33,7 +39,8 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
         super.onPreExecute();
         // Create a classic horizontal progress bar
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Downloading " + fileName + "...");
+        String name = displayName != null ? displayName : fileName;
+        progressDialog.setMessage("Downloading " + name + "...");
         progressDialog.setIndeterminate(false);
         progressDialog.setMax(100);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
