@@ -27,7 +27,7 @@ Built to solve the TLS/SSL certificate deprecation wall that breaks standard web
 
 ## Features
 
-- **Browse apps** by category (APPLICATION, GAME, ADULT) with paginated feeds
+- **Browse apps** by category (APPLICATION, GAME) with paginated feeds
 - **Featured apps** carousel on the home screen
 - **Search** apps by keyword
 - **App detail** page with version history, app icon, and download
