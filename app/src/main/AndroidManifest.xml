@@ -22,7 +22,9 @@
         <activity android:name=".ui.auth.RegisterActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
         <activity android:name=".ui.detail.AppDetailActivity" />
-        <activity android:name=".ui.home.AppListActivity" />
+        <activity
+            android:name=".ui.home.AppListActivity"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

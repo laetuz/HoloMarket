@@ -1,7 +1,11 @@
 package id.neotica.holomarket.ui.detail;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -41,6 +45,8 @@ public class AppDetailActivity extends Activity {
     private ListView lvVersions;
     private VersionAdapter adapter;
     private Button btDownload;
+    private String currentPackageName;
+    private boolean isOpenMode = false;
 
     private static final String INTENT_PACKAGE_NAME = "PACKAGE_NAME";
 
@@ -60,6 +66,16 @@ public class AppDetailActivity extends Activity {
         btDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (isOpenMode && currentPackageName != null && currentPackageName.length() > 0) {
+                    android.content.Intent launchIntent = getPackageManager().getLaunchIntentForPackage(currentPackageName);
+                    if (launchIntent != null) {
+                        startActivity(launchIntent);
+                    } else {
+                        Toast.makeText(AppDetailActivity.this, "Unable to open the app.", Toast.LENGTH_SHORT).show();
+                    }
+                    return;
+                }
+
                 if (adapter.getCount() == 0) {
                     Toast.makeText(AppDetailActivity.this, "No versions available.", Toast.LENGTH_SHORT).show();
                     return;
@@ -68,7 +84,6 @@ public class AppDetailActivity extends Activity {
                 VersionModel latestVersion = null;
                 int maxVersionCode = -1;
 
-                // find the highest version_code
                 for (int i = 0; i < adapter.getCount(); i++) {
                     VersionModel current = adapter.getItem(i);
                     if (current != null && current.versionCode > maxVersionCode) {
@@ -77,7 +92,6 @@ public class AppDetailActivity extends Activity {
                     }
                 }
 
-                // Download when found the highest version_code
                 if (latestVersion != null && latestVersion.fileUrl != null && latestVersion.fileUrl.length() > 0) {
 
                     String downloadUrl = BuildConfig.FILE_BASE_URL + latestVersion.fileUrl;
@@ -89,7 +103,6 @@ public class AppDetailActivity extends Activity {
 
                     AnalyticsTracker.track(AppDetailActivity.this, "download", "app_downloaded");
 
-                    // start downloading.
                     String appTitle = tvTitle.getText().toString();
                     new DownloadTask(AppDetailActivity.this, fileName, appTitle).execute(downloadUrl);
 
@@ -132,6 +145,7 @@ public class AppDetailActivity extends Activity {
         String packageName = getIntent().getStringExtra(INTENT_PACKAGE_NAME);
 
         if (packageName != null) {
+            currentPackageName = packageName;
             fetchAppDetails(packageName);
         } else {
             Toast.makeText(this, "Error: No package provided.", Toast.LENGTH_SHORT).show();
@@ -139,7 +153,36 @@ public class AppDetailActivity extends Activity {
         }
     }
 
-    private void fetchAppDetails(String packageName) {
+    private int getInstalledVersionCode(String packageName) {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(packageName, 0);
+            return info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            return -1;
+        }
+    }
+
+    private void updateInstallState(String packageName, int latestVersionCode) {
+        btDownload.setEnabled(true);
+        int installedVersion = getInstalledVersionCode(packageName);
+        if (installedVersion < 0) {
+            isOpenMode = false;
+            btDownload.setVisibility(View.VISIBLE);
+            btDownload.setText("Download");
+        } else if (installedVersion >= latestVersionCode) {
+            isOpenMode = true;
+            btDownload.setVisibility(View.VISIBLE);
+            btDownload.setText("Open");
+        } else {
+            isOpenMode = false;
+            btDownload.setVisibility(View.VISIBLE);
+            btDownload.setText("Update");
+        }
+    }
+
+    private void fetchAppDetails(final String packageName) {
+        btDownload.setEnabled(false);
+        btDownload.setText("Loading...");
         String targetUrl = BuildConfig.BASE_URL + "/apps/" + packageName;
 
         new ApiTask(this, "GET", targetUrl, null, "Loading details...", new ApiCallback() {
@@ -166,16 +209,21 @@ public class AppDetailActivity extends Activity {
                         ivIcon.setImageResource(android.R.drawable.sym_def_app_icon);
                     }
 
+                    int maxVersionCode = -1;
                     JSONArray versionsArray = root.optJSONArray("versions");
                     if (versionsArray != null) {
                         adapter.clear();
                         for (int i = 0; i < versionsArray.length(); i++) {
                             JSONObject vObj = versionsArray.getJSONObject(i);
+                            int vc = vObj.optInt("version_code", 0);
+                            if (vc > maxVersionCode) {
+                                maxVersionCode = vc;
+                            }
                             adapter.add(new VersionModel(
                                     vObj.optString("id", ""),
                                     vObj.optString("app_id", ""),
                                     vObj.optString("version_name", ""),
-                                    vObj.optInt("version_code", 0),
+                                    vc,
                                     vObj.optString("file_url", ""),
                                     vObj.optString("changelog", ""),
                                     vObj.optInt("min_sdk", 0),
@@ -184,6 +232,8 @@ public class AppDetailActivity extends Activity {
                             ));
                         }
                     }
+
+                    updateInstallState(packageName, maxVersionCode);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(AppDetailActivity.this, "Error parsing app details.", Toast.LENGTH_SHORT).show();
@@ -192,21 +242,29 @@ public class AppDetailActivity extends Activity {
 
             @Override
             public void onError(String errorMessage) {
-                if (errorMessage.contains("HTTP_ERROR_404|")) {
-                    String actualError = errorMessage.substring(errorMessage.indexOf("|") + 1);
-
-                    Toast.makeText(AppDetailActivity.this, actualError, Toast.LENGTH_LONG).show();
-                    finish();
-
-                } else if (errorMessage.contains("|")) {
-                    // Handle any other HTTP errors (500, 403, etc) that have custom messages
-                    String actualError = errorMessage.substring(errorMessage.indexOf("|") + 1);
-                    Toast.makeText(AppDetailActivity.this, actualError, Toast.LENGTH_LONG).show();
-
-                } else {
-                    // Fallback for standard network errors (e.g. timeout, no internet)
-                    Toast.makeText(AppDetailActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                String displayMessage = errorMessage;
+                if (errorMessage.contains("|")) {
+                    displayMessage = errorMessage.substring(errorMessage.indexOf("|") + 1);
                 }
+
+                new AlertDialog.Builder(AppDetailActivity.this)
+                        .setTitle("Error")
+                        .setMessage(displayMessage)
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("Reload", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                fetchAppDetails(packageName);
+                            }
+                        })
+                        .show();
             }
         }).execute();
     }

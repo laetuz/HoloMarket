@@ -1,7 +1,9 @@
 package id.neotica.holomarket.ui.home;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -165,6 +167,29 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(String errorMessage) {
+                String displayMessage = errorMessage;
+                if (errorMessage.contains("|")) {
+                    displayMessage = errorMessage.substring(errorMessage.indexOf("|") + 1);
+                }
+
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Error")
+                        .setMessage(displayMessage)
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("Reload", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                fetchFeaturedApps();
+                            }
+                        })
+                        .show();
             }
         }).execute();
     }

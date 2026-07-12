@@ -1,7 +1,6 @@
 package id.neotica.holomarket.utils;
 
 import android.app.Activity;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageButton;
@@ -49,9 +48,7 @@ public class TopBarHelper {
             }
         }
 
-        TypedArray ta = activity.obtainStyledAttributes(new int[]{android.R.attr.textColorPrimaryInverse});
         int tintColor = Color.WHITE;
-        ta.recycle();
 
         if (btnBack != null) {
             btnBack.setColorFilter(tintColor);
