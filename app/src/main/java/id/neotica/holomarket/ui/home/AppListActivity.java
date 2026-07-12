@@ -33,6 +33,7 @@ import id.neotica.holomarket.network.ApiCallback;
 import id.neotica.holomarket.network.ApiTask;
 import id.neotica.holomarket.ui.detail.AppDetailActivity;
 import id.neotica.holomarket.utils.CrashCatcher;
+import id.neotica.holomarket.utils.TopBarHelper;
 
 public class AppListActivity extends Activity {
 
@@ -64,6 +65,12 @@ public class AppListActivity extends Activity {
         if (intent != null && intent.hasExtra(INTENT_URL_TOPIC)) {
             currentCategory = intent.getStringExtra(INTENT_URL_TOPIC);
         }
+
+        String categoryTitle = "App List";
+        if (currentCategory != null && currentCategory.length() > 0) {
+            categoryTitle = currentCategory;
+        }
+        TopBarHelper.setup(this, categoryTitle, true);
 
         etSearch = (EditText) findViewById(R.id.et_search);
         btnSearch = (Button) findViewById(R.id.btn_search);
@@ -135,7 +142,7 @@ public class AppListActivity extends Activity {
 
     private void fetchApps(final int pageToLoad) {
         String baseEndpoint;
-        if ("ADULT".equals(currentCategory)) {
+        if ("adult".equals(currentCategory)) {
             baseEndpoint = "/apps/adult-feed";
         } else {
             baseEndpoint = "/apps/feed";
@@ -143,7 +150,7 @@ public class AppListActivity extends Activity {
         String targetUrl = BuildConfig.BASE_URL + baseEndpoint + "?page=" + pageToLoad;
 
         try {
-            if (!TextUtils.isEmpty(currentCategory) && !"ADULT".equals(currentCategory)) {
+            if (!TextUtils.isEmpty(currentCategory) && !"adult".equals(currentCategory)) {
                 targetUrl += "&category=" + URLEncoder.encode(currentCategory, "UTF-8");
             }
 

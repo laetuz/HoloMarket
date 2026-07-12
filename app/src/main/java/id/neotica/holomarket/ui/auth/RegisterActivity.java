@@ -20,6 +20,7 @@ import id.neotica.holomarket.network.AnalyticsTracker;
 import id.neotica.holomarket.network.ApiCallback;
 import id.neotica.holomarket.network.ApiTask;
 import id.neotica.holomarket.utils.CrashCatcher;
+import id.neotica.holomarket.utils.TopBarHelper;
 
 public class RegisterActivity extends Activity {
 
@@ -34,6 +35,8 @@ public class RegisterActivity extends Activity {
         CrashCatcher.init(this.getApplicationContext());
         setContentView(R.layout.activity_register);
         CrashCatcher.showCrashLogIfAny(this);
+
+        TopBarHelper.setup(this, "Create Account", true);
 
         etUsername = (EditText) findViewById(R.id.et_register_username);
         etEmail = (EditText) findViewById(R.id.et_register_email);

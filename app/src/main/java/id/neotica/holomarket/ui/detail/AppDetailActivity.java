@@ -32,6 +32,7 @@ import id.neotica.holomarket.network.AnalyticsTracker;
 import id.neotica.holomarket.network.ApiCallback;
 import id.neotica.holomarket.network.ApiTask;
 import id.neotica.holomarket.network.DownloadTask;
+import id.neotica.holomarket.utils.TopBarHelper;
 
 public class AppDetailActivity extends Activity {
 
@@ -47,6 +48,8 @@ public class AppDetailActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_detail);
+
+        TopBarHelper.setup(this, "App Detail", true);
 
         tvTitle = (TextView) findViewById(R.id.tv_detail_title);
         tvDesc = (TextView) findViewById(R.id.tv_detail_desc);
@@ -145,7 +148,14 @@ public class AppDetailActivity extends Activity {
                 try {
                     JSONObject root = new JSONObject(response);
 
-                    tvTitle.setText(root.optString("title", "Unknown App"));
+                    String appTitle = root.optString("title", "Unknown App");
+                    tvTitle.setText(appTitle);
+
+                    TextView topBarTitle = (TextView) findViewById(R.id.top_bar_title);
+                    if (topBarTitle != null) {
+                        topBarTitle.setText(appTitle);
+                    }
+
                     tvDesc.setText(root.optString("description", "No description available."));
 
                     String iconUrl = root.optString("icon_url", "");

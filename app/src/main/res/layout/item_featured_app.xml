@@ -23,5 +23,6 @@
         android:ellipsize="end"
         android:textSize="12sp"
         android:textStyle="bold"
+        android:textColor="#EEEEEE"
         tools:text="App Name" />
 </LinearLayout>

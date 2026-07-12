@@ -20,6 +20,7 @@ import id.neotica.holomarket.R;
 import id.neotica.holomarket.network.ApiCallback;
 import id.neotica.holomarket.network.ApiTask;
 import id.neotica.holomarket.utils.CrashCatcher;
+import id.neotica.holomarket.utils.TopBarHelper;
 
 public class ForgotPasswordActivity extends Activity {
 
@@ -34,6 +35,8 @@ public class ForgotPasswordActivity extends Activity {
         CrashCatcher.init(this.getApplicationContext());
         setContentView(R.layout.activity_forgot_password);
         CrashCatcher.showCrashLogIfAny(this);
+
+        TopBarHelper.setup(this, "Forgot Password", true);
 
         etEmail = (EditText) findViewById(R.id.et_forgot_email);
         btnSend = (Button) findViewById(R.id.btn_send_reset_link);

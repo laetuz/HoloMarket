@@ -5,8 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/top_bar" />
+
     <LinearLayout
-        android:paddingTop="16dp"
+        android:paddingTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

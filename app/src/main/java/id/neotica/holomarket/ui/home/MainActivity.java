@@ -3,7 +3,6 @@ package id.neotica.holomarket.ui.home;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -34,6 +33,7 @@ import id.neotica.holomarket.ui.detail.AppDetailActivity;
 import id.neotica.holomarket.ui.settings.SettingsActivity;
 import id.neotica.holomarket.utils.AuthManager;
 import id.neotica.holomarket.utils.CrashCatcher;
+import id.neotica.holomarket.utils.TopBarHelper;
 
 public class MainActivity extends Activity {
 
@@ -53,30 +53,26 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         CrashCatcher.showCrashLogIfAny(this);
 
-        final TextView tvTitle = (TextView) findViewById(R.id.tv_title);
+        final TextView tvWelcome = (TextView) findViewById(R.id.tv_welcome);
         final Button btLogin = (Button) findViewById(R.id.btn_login);
         final AuthManager authManager = new AuthManager(this);
 
-        ImageView ivSettings = (ImageView) findViewById(R.id.iv_settings);
-        TypedArray ta = obtainStyledAttributes(new int[]{android.R.attr.textColorPrimary});
-        int tintColor = ta.getColor(0, 0xFF888888);
-        ta.recycle();
-        ivSettings.setColorFilter(tintColor);
-
+        int actionIcon = 0;
+        View.OnClickListener actionListener = null;
         if (authManager.isLoggedIn()) {
-            btLogin.setVisibility(View.GONE);
-            tvTitle.setVisibility(View.VISIBLE);
-            ivSettings.setVisibility(View.VISIBLE);
             String username = authManager.getUsernameFromToken();
-            if (username != null) {
-                tvTitle.setText("Welcome " + username + "!");
-            } else {
-                tvTitle.setText("Welcome User!");
-            }
+//            tvWelcome.setVisibility(View.VISIBLE);
+            tvWelcome.setText("Welcome, " + username + "!");
+            actionIcon = R.drawable.ic_settings;
+            actionListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                }
+            };
         } else {
+            tvWelcome.setVisibility(View.GONE);
             btLogin.setVisibility(View.VISIBLE);
-            tvTitle.setVisibility(View.GONE);
-            ivSettings.setVisibility(View.GONE);
             btLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -84,6 +80,7 @@ public class MainActivity extends Activity {
                 }
             });
         }
+        TopBarHelper.setup(this, "HoloMarket", false, actionIcon, actionListener);
 
         listView = (ListView) findViewById(R.id.lv_main);
 
@@ -94,10 +91,10 @@ public class MainActivity extends Activity {
         listView.addHeaderView(headerView);
 
         List<String> topicList = new ArrayList<String>();
-        topicList.add("APPLICATION");
-        topicList.add("GAME");
+        topicList.add("application");
+        topicList.add("game");
         if (authManager.isAdultContentEnabled()) {
-            topicList.add("ADULT");
+            topicList.add("adult");
         }
 
         adapter = new SectionAdapter(this, topicList);
@@ -109,7 +106,6 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Object item = parent.getItemAtPosition(position);
 
-                // 2. Make sure they didn't click the header itself
                 if (item instanceof String) {
                     String clickedApp = (String) item;
 
@@ -117,13 +113,6 @@ public class MainActivity extends Activity {
                     intent.putExtra(INTENT_TOPIC, clickedApp);
                     startActivity(intent);
                 }
-            }
-        });
-
-        ivSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
             }
         });
 

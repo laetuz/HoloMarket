@@ -27,6 +27,7 @@ import id.neotica.holomarket.network.ApiTask;
 import id.neotica.holomarket.ui.home.MainActivity;
 import id.neotica.holomarket.utils.AuthManager;
 import id.neotica.holomarket.utils.CrashCatcher;
+import id.neotica.holomarket.utils.TopBarHelper;
 
 public class LoginActivity extends Activity {
 
@@ -43,6 +44,8 @@ public class LoginActivity extends Activity {
         CrashCatcher.init(this.getApplicationContext());
         setContentView(R.layout.activity_login);
         CrashCatcher.showCrashLogIfAny(this);
+
+        TopBarHelper.setup(this, "Sign In", false);
 
         authManager = new AuthManager(this);
 

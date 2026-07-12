@@ -25,6 +25,7 @@ import id.neotica.holomarket.network.DownloadTask;
 import id.neotica.holomarket.ui.home.MainActivity;
 import id.neotica.holomarket.utils.AuthManager;
 import id.neotica.holomarket.utils.CrashCatcher;
+import id.neotica.holomarket.utils.TopBarHelper;
 
 public class SettingsActivity extends Activity {
 
@@ -37,6 +38,8 @@ public class SettingsActivity extends Activity {
         CrashCatcher.init(this.getApplicationContext());
         setContentView(R.layout.activity_settings);
         CrashCatcher.showCrashLogIfAny(this);
+
+        TopBarHelper.setup(this, "Settings", true);
 
         authManager = new AuthManager(this);
 
