@@ -14,7 +14,7 @@ import id.neotica.holomarket.utils.AuthManager;
 public class AnalyticsTracker {
 
     private static final String TAG = "AnalyticsTracker";
-    private static final String EVENTS_URL = BuildConfig.NEOMETRICS_BASE_URL + "/analytics/events";
+    static final String EVENTS_URL = BuildConfig.NEOMETRICS_BASE_URL + "/analytics/events";
 
     public static void track(Context context, String eventType, String eventName) {
         Log.d(TAG, "track(" + eventType + ", " + eventName + ")");

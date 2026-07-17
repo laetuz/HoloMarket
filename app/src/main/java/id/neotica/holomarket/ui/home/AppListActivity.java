@@ -184,8 +184,9 @@ public class AppListActivity extends Activity {
                             String title = appObj.optString("title", "");
                             String desc = appObj.optString("description", "");
                             String iconUrl = appObj.isNull("icon_url") ? "" : appObj.optString("icon_url", "");
+                            String category = appObj.optString("category", "");
 
-                            adapter.add(new AppModel(packageName, title, desc, iconUrl));
+                            adapter.add(new AppModel(packageName, title, desc, iconUrl, category));
                         }
                     }
 
