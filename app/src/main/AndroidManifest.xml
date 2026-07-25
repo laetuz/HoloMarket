@@ -21,6 +21,7 @@
         <activity android:name=".ui.feature.auth.ForgotPasswordActivity" />
         <activity android:name=".ui.feature.auth.RegisterActivity" />
         <activity android:name=".ui.feature.settings.SettingsActivity" />
+        <activity android:name=".ui.feature.category.CategoriesActivity" />
         <activity android:name=".ui.feature.detail.AppDetailActivity" />
         <activity
             android:name="id.neotica.holomarket.ui.feature.applist.AppListActivity"

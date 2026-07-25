@@ -1,9 +1,7 @@
-package id.neotica.holomarket.ui.feature.home;
+package id.neotica.holomarket.ui.feature.category;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -28,100 +26,116 @@ import java.util.List;
 
 import id.neotica.holomarket.BuildConfig;
 import id.neotica.holomarket.R;
+import id.neotica.holomarket.model.CategoryModel;
 import id.neotica.holomarket.network.ApiCallback;
 import id.neotica.holomarket.network.ApiTask;
-import id.neotica.holomarket.ui.feature.auth.LoginActivity;
-import id.neotica.holomarket.ui.feature.category.CategoriesActivity;
+import id.neotica.holomarket.ui.feature.applist.AppListActivity;
 import id.neotica.holomarket.ui.feature.detail.AppDetailActivity;
-import id.neotica.holomarket.ui.feature.settings.SettingsActivity;
-import id.neotica.holomarket.utils.AuthManager;
 import id.neotica.holomarket.utils.CrashCatcher;
 import id.neotica.holomarket.utils.TopBarHelper;
 
-public class MainActivity extends Activity {
+/**
+ * Created by ryomartin on 26/07/26.
+ */
+
+public class CategoriesActivity extends Activity {
+
+    private static final String INTENT_URL_TOPIC = "URL_TOPIC";
+    private static final String INTENT_URL_TOPIC_DISPLAY = "URL_TOPIC_DISPLAY";
 
     private ListView listView;
-    private SectionAdapter adapter;
-
     private View headerView;
     private Gallery galleryFeatured;
-
-    private static final String INTENT_TOPIC = "URL_TOPIC";
+    private CategoryModel category;
+    private String parentSlug;
+    private String parentDisplayName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CrashCatcher.init(this.getApplicationContext());
-
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_categories);
         CrashCatcher.showCrashLogIfAny(this);
 
-        final TextView tvWelcome = (TextView) findViewById(R.id.tv_welcome);
-        final Button btLogin = (Button) findViewById(R.id.btn_login);
-        final AuthManager authManager = new AuthManager(this);
-
-        int actionIcon = 0;
-        View.OnClickListener actionListener = null;
-        if (authManager.isLoggedIn()) {
-            actionIcon = R.drawable.ic_settings;
-            actionListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                }
-            };
-        } else {
-            tvWelcome.setVisibility(View.GONE);
-            btLogin.setVisibility(View.VISIBLE);
-            btLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                }
-            });
+        Intent intent = getIntent();
+        parentSlug = intent.getStringExtra(INTENT_URL_TOPIC);
+        parentDisplayName = intent.getStringExtra(INTENT_URL_TOPIC_DISPLAY);
+        if (parentDisplayName == null) {
+            parentDisplayName = parentSlug;
         }
-        TopBarHelper.setup(this, "HoloMarket", false, actionIcon, actionListener);
+        TopBarHelper.setup(this, parentDisplayName, true);
 
         listView = (ListView) findViewById(R.id.lv_main);
 
-        // 1. Inflate and add the Header BEFORE setting the adapter
         LayoutInflater inflater = getLayoutInflater();
-        headerView = inflater.inflate(R.layout.header_featured_apps, listView, false);
+        headerView = inflater.inflate(R.layout.header_category_featured, listView, false);
         galleryFeatured = (Gallery) headerView.findViewById(R.id.gallery_featured);
         listView.addHeaderView(headerView);
 
-        List<AppTopic> topicList = new ArrayList<AppTopic>();
-        topicList.add(new AppTopic("Applications", "application"));
-        topicList.add(new AppTopic("Games", "game"));
-        if (authManager.isAdultContentEnabled()) {
-            topicList.add(new AppTopic("Adult", "adult"));
-        }
-
-        adapter = new SectionAdapter(this, topicList);
-        listView.setAdapter(adapter);
-
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Object item = parent.getItemAtPosition(position);
-
-                if (item instanceof AppTopic) {
-                    AppTopic topic = (AppTopic) item;
-
-                    Intent intent = new Intent(MainActivity.this, CategoriesActivity.class);
-                    intent.putExtra(INTENT_TOPIC, topic.value);
-                    intent.putExtra(INTENT_TOPIC + "_DISPLAY", topic.displayName);
-                    startActivity(intent);
-                }
-            }
-        });
-
+        fetchCategory();
         fetchFeaturedApps();
     }
 
+    private void fetchCategory() {
+        String targetUrl = BuildConfig.BASE_URL + "/categories/" + parentSlug;
+
+        new ApiTask(this, "GET", targetUrl, null, "Loading...", new ApiCallback() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    category = CategoryModel.fromJson(obj);
+
+                    final List<String> displayItems = new ArrayList<String>();
+                    final List<String> slugItems = new ArrayList<String>();
+
+                    displayItems.add("All");
+                    slugItems.add(parentSlug);
+
+                    if (category.children != null) {
+                        for (CategoryModel child : category.children) {
+                            displayItems.add(child.name);
+                            slugItems.add(child.slug);
+                        }
+                    }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                            CategoriesActivity.this,
+                            android.R.layout.simple_list_item_1,
+                            displayItems
+                    );
+                    listView.setAdapter(adapter);
+
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            int headerCount = listView.getHeaderViewsCount();
+                            int dataPosition = position - headerCount;
+                            if (dataPosition < 0) return;
+
+                            String slug = slugItems.get(dataPosition);
+                            String displayName = displayItems.get(dataPosition);
+
+                            Intent intent = new Intent(CategoriesActivity.this, AppListActivity.class);
+                            intent.putExtra(INTENT_URL_TOPIC, slug);
+                            intent.putExtra(INTENT_URL_TOPIC_DISPLAY, displayName);
+                            startActivity(intent);
+                        }
+                    });
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+            }
+        }).execute();
+    }
+
     private void fetchFeaturedApps() {
-        String url = BuildConfig.BASE_URL + "/apps/collections/featured";
+        String url = BuildConfig.BASE_URL + "/apps/collections/" + parentSlug;
 
         new ApiTask(this, "GET", url, null, null, new ApiCallback() {
             @Override
@@ -131,6 +145,8 @@ public class MainActivity extends Activity {
                     JSONArray dataArray = jsonResponse.getJSONArray("data");
 
                     if (dataArray.length() > 0) {
+                        TextView tvFeaturedTitle = (TextView) headerView.findViewById(R.id.tv_featured_title);
+                        tvFeaturedTitle.setText("Featured in " + parentDisplayName);
                         headerView.setVisibility(View.VISIBLE);
 
                         final List<JSONObject> items = new ArrayList<JSONObject>();
@@ -138,8 +154,8 @@ public class MainActivity extends Activity {
                             items.add(dataArray.getJSONObject(i));
                         }
 
-                        final FeaturedGalleryAdapter adapter = new FeaturedGalleryAdapter(
-                                MainActivity.this, items);
+                        final FeaturedAppsAdapter adapter = new FeaturedAppsAdapter(
+                                CategoriesActivity.this, items);
                         galleryFeatured.setAdapter(adapter);
 
                         int midPos = Integer.MAX_VALUE / 2;
@@ -152,7 +168,7 @@ public class MainActivity extends Activity {
                                 JSONObject appObj = items.get(position % items.size());
                                 String packageName = appObj.optString("package_name", "");
                                 if (!TextUtils.isEmpty(packageName)) {
-                                    Intent intent = new Intent(MainActivity.this, AppDetailActivity.class);
+                                    Intent intent = new Intent(CategoriesActivity.this, AppDetailActivity.class);
                                     intent.putExtra("PACKAGE_NAME", packageName);
                                     startActivity(intent);
                                 }
@@ -166,38 +182,15 @@ public class MainActivity extends Activity {
 
             @Override
             public void onError(String errorMessage) {
-                String displayMessage = errorMessage;
-                if (errorMessage.contains("|")) {
-                    displayMessage = errorMessage.substring(errorMessage.indexOf("|") + 1);
-                }
-
-                new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Error")
-                        .setMessage(displayMessage)
-                        .setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        })
-                        .setNegativeButton("Reload", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                fetchFeaturedApps();
-                            }
-                        })
-                        .show();
             }
         }).execute();
     }
 
-    private static class FeaturedGalleryAdapter extends BaseAdapter {
+    private static class FeaturedAppsAdapter extends BaseAdapter {
         private Context context;
         private List<JSONObject> items;
 
-        FeaturedGalleryAdapter(Context context, List<JSONObject> items) {
+        FeaturedAppsAdapter(Context context, List<JSONObject> items) {
             this.context = context;
             this.items = items;
         }
