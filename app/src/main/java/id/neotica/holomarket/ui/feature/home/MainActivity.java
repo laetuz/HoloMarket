@@ -1,4 +1,4 @@
-package id.neotica.holomarket.ui.home;
+package id.neotica.holomarket.ui.feature.home;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,9 +30,10 @@ import id.neotica.holomarket.BuildConfig;
 import id.neotica.holomarket.R;
 import id.neotica.holomarket.network.ApiCallback;
 import id.neotica.holomarket.network.ApiTask;
-import id.neotica.holomarket.ui.auth.LoginActivity;
-import id.neotica.holomarket.ui.detail.AppDetailActivity;
-import id.neotica.holomarket.ui.settings.SettingsActivity;
+import id.neotica.holomarket.ui.feature.applist.AppListActivity;
+import id.neotica.holomarket.ui.feature.auth.LoginActivity;
+import id.neotica.holomarket.ui.feature.detail.AppDetailActivity;
+import id.neotica.holomarket.ui.feature.settings.SettingsActivity;
 import id.neotica.holomarket.utils.AuthManager;
 import id.neotica.holomarket.utils.CrashCatcher;
 import id.neotica.holomarket.utils.TopBarHelper;
@@ -62,9 +63,6 @@ public class MainActivity extends Activity {
         int actionIcon = 0;
         View.OnClickListener actionListener = null;
         if (authManager.isLoggedIn()) {
-            String username = authManager.getUsernameFromToken();
-//            tvWelcome.setVisibility(View.VISIBLE);
-            tvWelcome.setText("Welcome, " + username + "!");
             actionIcon = R.drawable.ic_settings;
             actionListener = new View.OnClickListener() {
                 @Override

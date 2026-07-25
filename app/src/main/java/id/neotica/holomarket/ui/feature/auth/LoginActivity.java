@@ -1,4 +1,4 @@
-package id.neotica.holomarket.ui.auth;
+package id.neotica.holomarket.ui.feature.auth;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,7 +24,7 @@ import id.neotica.holomarket.R;
 import id.neotica.holomarket.network.AnalyticsTracker;
 import id.neotica.holomarket.network.ApiCallback;
 import id.neotica.holomarket.network.ApiTask;
-import id.neotica.holomarket.ui.home.MainActivity;
+import id.neotica.holomarket.ui.feature.home.MainActivity;
 import id.neotica.holomarket.utils.AuthManager;
 import id.neotica.holomarket.utils.CrashCatcher;
 import id.neotica.holomarket.utils.TopBarHelper;

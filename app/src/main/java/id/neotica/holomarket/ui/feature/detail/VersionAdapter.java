@@ -1,4 +1,4 @@
-package id.neotica.holomarket.ui.detail;
+package id.neotica.holomarket.ui.feature.detail;
 
 import android.content.Context;
 import android.view.LayoutInflater;

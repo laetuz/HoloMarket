@@ -1,21 +1,15 @@
-package id.neotica.holomarket.ui.home;
+package id.neotica.holomarket.ui.feature.home;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
-import id.neotica.holomarket.BuildConfig;
 import id.neotica.holomarket.R;
-import id.neotica.holomarket.model.AppModel;
 
 /**
  * Created by ryomartin on 21/03/26.

@@ -1,4 +1,4 @@
-package id.neotica.holomarket.ui.home;
+package id.neotica.holomarket.ui.feature.applist;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,14 +31,14 @@ import id.neotica.holomarket.model.AppModel;
 import id.neotica.holomarket.network.AnalyticsTracker;
 import id.neotica.holomarket.network.ApiCallback;
 import id.neotica.holomarket.network.ApiTask;
-import id.neotica.holomarket.ui.detail.AppDetailActivity;
+import id.neotica.holomarket.ui.feature.detail.AppDetailActivity;
 import id.neotica.holomarket.utils.CrashCatcher;
 import id.neotica.holomarket.utils.TopBarHelper;
 
 public class AppListActivity extends Activity {
 
     private ListView listView;
-    private AppDetailActivity.AppAdapter adapter;
+    private AppAdapter adapter;
     private List<AppModel> appList;
 
     // Pagination State
@@ -82,7 +82,7 @@ public class AppListActivity extends Activity {
         btnLoadMore = (Button) footerView.findViewById(R.id.btn_load_more);
         listView.addFooterView(footerView);
 
-        adapter = new AppDetailActivity.AppAdapter(this, appList);
+        adapter = new AppAdapter(this, appList);
         listView.setAdapter(adapter);
 
         btnLoadMore.setVisibility(View.GONE);

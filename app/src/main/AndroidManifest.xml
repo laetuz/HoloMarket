@@ -11,19 +11,19 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-        <activity android:name="id.neotica.holomarket.ui.home.MainActivity">
+        <activity android:name=".ui.feature.home.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.auth.LoginActivity" />
-        <activity android:name=".ui.auth.ForgotPasswordActivity" />
-        <activity android:name=".ui.auth.RegisterActivity" />
-        <activity android:name=".ui.settings.SettingsActivity" />
-        <activity android:name=".ui.detail.AppDetailActivity" />
+        <activity android:name=".ui.feature.auth.LoginActivity" />
+        <activity android:name=".ui.feature.auth.ForgotPasswordActivity" />
+        <activity android:name=".ui.feature.auth.RegisterActivity" />
+        <activity android:name=".ui.feature.settings.SettingsActivity" />
+        <activity android:name=".ui.feature.detail.AppDetailActivity" />
         <activity
-            android:name=".ui.home.AppListActivity"
+            android:name="id.neotica.holomarket.ui.feature.applist.AppListActivity"
             android:windowSoftInputMode="stateHidden" />
     </application>
 

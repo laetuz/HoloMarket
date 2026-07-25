@@ -1,4 +1,4 @@
-package id.neotica.holomarket.ui.detail;
+package id.neotica.holomarket.ui.feature.detail;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -311,59 +311,6 @@ public class AppDetailActivity extends Activity {
                     viewHolder.tvChangelog.setVisibility(View.VISIBLE);
                 } else  {
                     viewHolder.tvChangelog.setVisibility(View.GONE);
-                }
-            }
-
-            return convertView;
-        }
-    }
-
-    /**
-     * Created by ryomartin on 21/03/26.
-     */
-
-    public static class AppAdapter extends ArrayAdapter<AppModel> {
-        public AppAdapter(Context context, List<AppModel> apps) {
-            super(context, 0, apps);
-        }
-
-        private static class ViewHolder {
-            TextView tvtitle;
-            ImageView ivIcon;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            AppModel app = getItem(position);
-
-            ViewHolder viewHolder;
-
-            if (convertView == null) {
-                viewHolder = new ViewHolder();
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_app, parent, false);
-
-                viewHolder.tvtitle = (TextView) convertView.findViewById(R.id.tv_title);
-                viewHolder.ivIcon = (ImageView) convertView.findViewById(R.id.iv_icon);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
-
-            if (app != null) {
-                viewHolder.tvtitle.setText(app.title);
-
-                if (!TextUtils.isEmpty(app.iconUrl)) {
-
-                    String fullImageUrl = BuildConfig.FILE_BASE_URL + "/buckets" + app.iconUrl;
-
-                    // Fire the ImageLoader
-                    ImageLoader.getInstance().displayImage(fullImageUrl, viewHolder.ivIcon);
-
-                } else {
-                    // If the app has no icon, cancel any pending image load on this recycled view
-                    // and set it to a default system icon
-                    ImageLoader.getInstance().cancelDisplayTask(viewHolder.ivIcon);
-                    viewHolder.ivIcon.setImageResource(android.R.drawable.sym_def_app_icon);
                 }
             }
 

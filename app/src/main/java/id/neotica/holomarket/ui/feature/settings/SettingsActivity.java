@@ -1,4 +1,4 @@
-package id.neotica.holomarket.ui.settings;
+package id.neotica.holomarket.ui.feature.settings;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,7 +22,7 @@ import id.neotica.holomarket.R;
 import id.neotica.holomarket.network.ApiCallback;
 import id.neotica.holomarket.network.ApiTask;
 import id.neotica.holomarket.network.DownloadTask;
-import id.neotica.holomarket.ui.home.MainActivity;
+import id.neotica.holomarket.ui.feature.home.MainActivity;
 import id.neotica.holomarket.utils.AuthManager;
 import id.neotica.holomarket.utils.CrashCatcher;
 import id.neotica.holomarket.utils.TopBarHelper;
