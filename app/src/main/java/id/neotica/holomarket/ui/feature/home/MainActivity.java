@@ -90,11 +90,11 @@ public class MainActivity extends Activity {
         galleryFeatured = (Gallery) headerView.findViewById(R.id.gallery_featured);
         listView.addHeaderView(headerView);
 
-        List<String> topicList = new ArrayList<String>();
-        topicList.add("application");
-        topicList.add("game");
+        List<AppTopic> topicList = new ArrayList<AppTopic>();
+        topicList.add(new AppTopic("Applications", "application"));
+        topicList.add(new AppTopic("Games", "game"));
         if (authManager.isAdultContentEnabled()) {
-            topicList.add("adult");
+            topicList.add(new AppTopic("Adult", "adult"));
         }
 
         adapter = new SectionAdapter(this, topicList);
@@ -106,11 +106,12 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Object item = parent.getItemAtPosition(position);
 
-                if (item instanceof String) {
-                    String clickedApp = (String) item;
+                if (item instanceof AppTopic) {
+                    AppTopic topic = (AppTopic) item;
 
                     Intent intent = new Intent(MainActivity.this, AppListActivity.class);
-                    intent.putExtra(INTENT_TOPIC, clickedApp);
+                    intent.putExtra(INTENT_TOPIC, topic.value);
+                    intent.putExtra(INTENT_TOPIC + "_DISPLAY", topic.displayName);
                     startActivity(intent);
                 }
             }

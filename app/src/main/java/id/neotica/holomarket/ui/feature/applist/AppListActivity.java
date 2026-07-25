@@ -68,7 +68,12 @@ public class AppListActivity extends Activity {
 
         String categoryTitle = "App List";
         if (currentCategory != null && currentCategory.length() > 0) {
-            categoryTitle = currentCategory;
+            String displayName = intent.getStringExtra(INTENT_URL_TOPIC + "_DISPLAY");
+            if (displayName != null && displayName.length() > 0) {
+                categoryTitle = displayName;
+            } else {
+                categoryTitle = currentCategory;
+            }
         }
         TopBarHelper.setup(this, categoryTitle, true);
 

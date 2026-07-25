@@ -15,9 +15,9 @@ import id.neotica.holomarket.R;
  * Created by ryomartin on 21/03/26.
  */
 
-public class SectionAdapter extends ArrayAdapter<String> {
-    public SectionAdapter(Context context, List<String> title) {
-        super(context, 0, title);
+public class SectionAdapter extends ArrayAdapter<AppTopic> {
+    public SectionAdapter(Context context, List<AppTopic> topics) {
+        super(context, 0, topics);
     }
 
     private static class ViewHolder {
@@ -26,7 +26,7 @@ public class SectionAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        String topic = getItem(position);
+        AppTopic topic = getItem(position);
         ViewHolder viewHolder;
 
         if (convertView == null) {
@@ -39,7 +39,7 @@ public class SectionAdapter extends ArrayAdapter<String> {
         }
 
         if (topic != null) {
-            viewHolder.tvTitle.setText(topic);
+            viewHolder.tvTitle.setText(topic.displayName);
         }
 
         return convertView;
