@@ -49,6 +49,7 @@ public class AppListActivity extends Activity {
     private int currentPage = 1;
     private int totalPages = 1;
     private Button btnLoadMore;
+    private TextView tvAllLoaded;
     private View footerView;
 
     private static final String INTENT_URL_TOPIC = "URL_TOPIC";
@@ -85,12 +86,14 @@ public class AppListActivity extends Activity {
 
         footerView = getLayoutInflater().inflate(R.layout.footer_load_more, null);
         btnLoadMore = (Button) footerView.findViewById(R.id.btn_load_more);
+        tvAllLoaded = (TextView) footerView.findViewById(R.id.tv_all_loaded);
         listView.addFooterView(footerView);
 
         adapter = new AppAdapter(this, appList);
         listView.setAdapter(adapter);
 
         btnLoadMore.setVisibility(View.GONE);
+        tvAllLoaded.setVisibility(View.GONE);
 
         btnSearch.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -197,8 +200,10 @@ public class AppListActivity extends Activity {
 
                     if (currentPage >= totalPages) {
                         btnLoadMore.setVisibility(View.GONE);
+                        tvAllLoaded.setVisibility(View.VISIBLE);
                     } else {
                         btnLoadMore.setVisibility(View.VISIBLE);
+                        tvAllLoaded.setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

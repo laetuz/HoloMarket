@@ -118,6 +118,15 @@ public class SettingsActivity extends Activity {
             }
         });
 
+        TextView tvVersion = (TextView) findViewById(R.id.tv_version);
+        tvVersion.setText("Version " + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")");
+
+        TextView tvChangelog = (TextView) findViewById(R.id.tv_changelog);
+        tvChangelog.setText("- Optimized for Android 1.5+\n- New category browsing with galleries\n- Performance improvements");
+
+        TextView tvCredits = (TextView) findViewById(R.id.tv_credits);
+        tvCredits.setText("HoloMarket\nPowered by Neotica\n© 2026 Neotica");
+
         Button btnCheckUpdate = (Button) findViewById(R.id.btn_check_update);
         btnCheckUpdate.setOnClickListener(new View.OnClickListener() {
             @Override

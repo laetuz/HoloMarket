@@ -14,4 +14,12 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp" />
 
+    <TextView
+        android:id="@+id/tv_all_loaded"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="All items are loaded."
+        android:visibility="gone" />
+
 </LinearLayout>
