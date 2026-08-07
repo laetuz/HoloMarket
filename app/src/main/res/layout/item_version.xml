@@ -5,6 +5,12 @@
     android:orientation="vertical"
     android:padding="12dp">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey100"
+        android:layout_marginBottom="8dp" />
+
     <TextView
         android:id="@+id/tv_version_name"
         android:layout_width="match_parent"
@@ -25,5 +31,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btn_version_download"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Download" />
 
 </LinearLayout>
