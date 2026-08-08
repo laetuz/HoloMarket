@@ -116,6 +116,7 @@ public class AppListActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position < 0 || position >= adapter.getCount()) { return; }
                 AppModel clickedApp = adapter.getItem(position);
                 if (clickedApp != null) {
                     Intent intent = new Intent(AppListActivity.this, AppDetailActivity.class);
