@@ -193,8 +193,25 @@ public class AppListActivity extends Activity {
                             String desc = appObj.optString("description", "");
                             String iconUrl = appObj.isNull("icon_url") ? "" : appObj.optString("icon_url", "");
                             String category = appObj.optString("category", "");
+                            String developer = appObj.optString("developer", "");
 
-                            adapter.add(new AppModel(packageName, title, desc, iconUrl, category));
+                            List<String> categories = new ArrayList<String>();
+                            JSONArray categoriesArray = appObj.optJSONArray("categories");
+                            if (categoriesArray != null) {
+                                for (int j = 0; j < categoriesArray.length(); j++) {
+                                    categories.add(categoriesArray.optString(j));
+                                }
+                            }
+
+                            List<String> screenshots = new ArrayList<String>();
+                            JSONArray screenshotsArray = appObj.optJSONArray("screenshots");
+                            if (screenshotsArray != null) {
+                                for (int j = 0; j < screenshotsArray.length(); j++) {
+                                    screenshots.add(screenshotsArray.optString(j));
+                                }
+                            }
+
+                            adapter.add(new AppModel(packageName, title, desc, iconUrl, category, developer, categories, screenshots));
                         }
                     }
 

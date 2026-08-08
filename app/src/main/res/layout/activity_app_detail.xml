@@ -41,6 +41,22 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_detail_developer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_detail_categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/bt_download"
                 android:text="Download"
@@ -54,6 +70,41 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_read_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Read more"
+                android:textColor="#5D6EE0"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_screenshots_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Screenshots:"
+                android:textStyle="bold"
+                android:textColor="#5D6EE0"
+                android:visibility="gone" />
+
+            <HorizontalScrollView
+                android:id="@+id/hsv_screenshots"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:scrollbars="none"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/ll_screenshots"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
 
             <TextView
                 android:layout_width="match_parent"

@@ -13,9 +13,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
-import id.neotica.holomarket.BuildConfig;
 import id.neotica.holomarket.R;
 import id.neotica.holomarket.model.AppModel;
+import id.neotica.holomarket.utils.ImageUrlHelper;
 
 /**
  * Created by ryomartin on 21/03/26.
@@ -53,7 +53,7 @@ public class AppAdapter extends ArrayAdapter<AppModel> {
 
             if (!TextUtils.isEmpty(app.iconUrl)) {
 
-                String fullImageUrl = BuildConfig.FILE_BASE_URL + "/buckets" + app.iconUrl;
+                String fullImageUrl = ImageUrlHelper.build(app.iconUrl);
 
                 // Fire the ImageLoader
                 ImageLoader.getInstance().displayImage(fullImageUrl, viewHolder.ivIcon);

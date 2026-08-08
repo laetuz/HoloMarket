@@ -19,9 +19,9 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import id.neotica.holomarket.BuildConfig;
 import id.neotica.holomarket.R;
 import id.neotica.holomarket.ui.feature.detail.AppDetailActivity;
+import id.neotica.holomarket.utils.ImageUrlHelper;
 
 /**
  * Created by ryomartin on 26/07/26.
@@ -71,7 +71,7 @@ public class InfiniteAppsAdapter extends BaseAdapter {
         tvFeaturedTitle.setText(title);
 
         if (!TextUtils.isEmpty(iconUrl)) {
-            String fullImageUrl = BuildConfig.FILE_BASE_URL + "/buckets" + iconUrl;
+            String fullImageUrl = ImageUrlHelper.build(iconUrl);
             ImageLoader.getInstance().displayImage(fullImageUrl, ivFeaturedIcon);
         } else {
             ImageLoader.getInstance().cancelDisplayTask(ivFeaturedIcon);
