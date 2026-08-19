@@ -47,8 +47,7 @@ public class CrashCatcher {
      * Call this in your Activity to pop up the dialog if a crash was saved.
      */
     public static void showCrashLogIfAny(final Activity activity) {
-        final SharedPreferences prefs = activity.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        String lastCrash = prefs.getString(KEY_LAST_CRASH, null);
+        String lastCrash = getLastCrash(activity);
 
         if (lastCrash != null) {
             new AlertDialog.Builder(activity)
@@ -58,7 +57,17 @@ public class CrashCatcher {
                     .show();
 
             // Clear the log so it only shows once
-            prefs.edit().remove(KEY_LAST_CRASH).commit();
+            clearCrashLog(activity);
         }
+    }
+
+    public static String getLastCrash(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return prefs.getString(KEY_LAST_CRASH, null);
+    }
+
+    public static void clearCrashLog(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().remove(KEY_LAST_CRASH).commit();
     }
 }

@@ -2,6 +2,8 @@ package id.neotica.holomarket.utils;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -51,10 +53,17 @@ public class TopBarHelper {
         int tintColor = Color.WHITE;
 
         if (btnBack != null) {
-            btnBack.setColorFilter(tintColor);
+            tintDrawable(btnBack, tintColor);
         }
         if (btnAction != null && btnAction.getVisibility() == View.VISIBLE) {
-            btnAction.setColorFilter(tintColor);
+            tintDrawable(btnAction, tintColor);
+        }
+    }
+
+    private static void tintDrawable(ImageButton btn, int color) {
+        Drawable d = btn.getDrawable();
+        if (d != null) {
+            d.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
     }
 }
