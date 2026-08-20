@@ -67,6 +67,9 @@ public class AppDetailActivity extends Activity {
 
         TopBarHelper.setup(this, "App Detail", true);
 
+        View topBarBack = findViewById(R.id.top_bar_back);
+        topBarBack.setNextFocusDownId(R.id.bt_download);
+
         tvTitle = (TextView) findViewById(R.id.tv_detail_title);
         tvDesc = (TextView) findViewById(R.id.tv_detail_desc);
         tvDeveloper = (TextView) findViewById(R.id.tv_detail_developer);

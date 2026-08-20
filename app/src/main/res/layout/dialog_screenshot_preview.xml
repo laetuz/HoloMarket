@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:spacing="0dp"
-        android:unselectedAlpha="1.0" />
+        android:unselectedAlpha="1.0"
+        android:nextFocusUp="@id/iv_close_preview" />
 
     <ImageView
         android:id="@+id/iv_close_preview"
@@ -20,6 +21,9 @@
         android:layout_marginRight="8dp"
         android:padding="8dp"
         android:src="@drawable/ic_close"
-        android:contentDescription="Close" />
+        android:contentDescription="Close"
+        android:focusable="true"
+        android:background="@drawable/bg_focusable"
+        android:nextFocusDown="@id/gallery_preview" />
 
 </FrameLayout>

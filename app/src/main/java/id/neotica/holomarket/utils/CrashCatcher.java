@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import id.neotica.holomarket.BuildConfig;
+
 /**
  * Created by ryomartin on 21/03/26.
  */
@@ -16,6 +18,7 @@ public class CrashCatcher {
 
     private static final String PREF_NAME = "CrashLogs";
     private static final String KEY_LAST_CRASH = "last_crash";
+    private static final String KEY_LAST_CRASH_VERSION = "last_crash_version";
 
     /**
      * Call this once to start listening for app crashes.
@@ -33,7 +36,10 @@ public class CrashCatcher {
 
                 // 2. Save it to memory instantly
                 SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-                prefs.edit().putString(KEY_LAST_CRASH, stackTrace).commit();
+                prefs.edit()
+                        .putString(KEY_LAST_CRASH, stackTrace)
+                        .putInt(KEY_LAST_CRASH_VERSION, BuildConfig.VERSION_CODE)
+                        .commit();
 
                 // 3. Let the OS kill the app normally
                 if (defaultHandler != null) {
@@ -49,7 +55,7 @@ public class CrashCatcher {
     public static void showCrashLogIfAny(final Activity activity) {
         String lastCrash = getLastCrash(activity);
 
-        if (lastCrash != null) {
+        if (lastCrash != null && isFromCurrentBuild(activity)) {
             new AlertDialog.Builder(activity)
                     .setTitle("Crash Detected!")
                     .setMessage(lastCrash)
@@ -61,6 +67,12 @@ public class CrashCatcher {
         }
     }
 
+    private static boolean isFromCurrentBuild(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        int crashVersion = prefs.getInt(KEY_LAST_CRASH_VERSION, -1);
+        return crashVersion == BuildConfig.VERSION_CODE;
+    }
+
     public static String getLastCrash(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return prefs.getString(KEY_LAST_CRASH, null);
@@ -68,6 +80,6 @@ public class CrashCatcher {
 
     public static void clearCrashLog(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().remove(KEY_LAST_CRASH).commit();
+        prefs.edit().remove(KEY_LAST_CRASH).remove(KEY_LAST_CRASH_VERSION).commit();
     }
 }

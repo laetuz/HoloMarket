@@ -23,13 +23,17 @@
             android:layout_weight="1"
             android:hint="Search apps..."
             android:singleLine="true"
-            android:imeOptions="actionSearch" />
+            android:imeOptions="actionSearch"
+            android:nextFocusUp="@id/top_bar_back"
+            android:nextFocusRight="@id/btn_search" />
 
         <Button
             android:id="@+id/btn_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search" />
+            android:text="Search"
+            android:nextFocusUp="@id/top_bar_back"
+            android:nextFocusLeft="@id/et_search" />
     </LinearLayout>
 
     <ListView

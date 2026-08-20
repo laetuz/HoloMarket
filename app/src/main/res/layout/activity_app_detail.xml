@@ -62,7 +62,8 @@
                 android:text="Download"
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:nextFocusUp="@id/top_bar_back" />
 
             <TextView
                 android:id="@+id/tv_detail_desc"
@@ -80,7 +81,10 @@
                 android:text="Read more"
                 android:textColor="#5D6EE0"
                 android:textSize="14sp"
-                android:visibility="gone" />
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@drawable/bg_focusable"
+                android:nextFocusUp="@id/bt_download" />
 
             <TextView
                 android:id="@+id/tv_screenshots_label"

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="top_bar_back" type="id" />
+    <item name="bt_download" type="id" />
+    <item name="btn_search" type="id" />
+    <item name="et_search" type="id" />
+    <item name="iv_close_preview" type="id" />
+    <item name="gallery_preview" type="id" />
+</resources>

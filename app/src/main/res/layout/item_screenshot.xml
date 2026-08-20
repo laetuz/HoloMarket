@@ -5,4 +5,6 @@
     android:layout_height="350dp"
     android:layout_marginRight="8dp"
     android:scaleType="centerCrop"
+    android:focusable="true"
+    android:background="@drawable/bg_focusable"
     android:contentDescription="App screenshot" />

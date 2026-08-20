@@ -78,6 +78,9 @@ public class AppListActivity extends Activity {
         }
         TopBarHelper.setup(this, categoryTitle, true);
 
+        View topBarBack = findViewById(R.id.top_bar_back);
+        topBarBack.setNextFocusDownId(R.id.et_search);
+
         etSearch = (EditText) findViewById(R.id.et_search);
         btnSearch = (Button) findViewById(R.id.btn_search);
 
