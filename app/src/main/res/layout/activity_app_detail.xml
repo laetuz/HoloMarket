@@ -114,7 +114,39 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Ratings &amp; Reviews"
+                android:textStyle="bold"
+                android:textColor="#5D6EE0" />
+
+            <RatingBar
+                android:id="@+id/rb_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:numStars="5"
+                android:stepSize="1"
+                android:rating="0" />
+
+            <TextView
+                android:id="@+id/tv_rating_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btn_delete_review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Delete"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Version History:"
                 android:textStyle="bold"
                 android:textColor="#5D6EE0" />

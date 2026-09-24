@@ -1,5 +1,6 @@
 package id.neotica.holomarket.model;
 
+import org.json.JSONObject;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -46,5 +47,36 @@ public class VersionModelTest {
     public void emptyChangelog_isAllowed() {
         VersionModel v = new VersionModel("id", "a", "1.0", 1, "/x.apk", "", 7, 0, 0);
         assertEquals("", v.changelog);
+    }
+
+    @Test
+    public void fromJson_parsesAllFields() throws Exception {
+        String json = "{\"id\":\"v1\",\"app_id\":\"app1\",\"version_name\":\"1.0\",\"version_code\":10,"
+                + "\"file_url\":\"/dl.apk\",\"changelog\":\"Bug fixes\",\"min_sdk\":7,\"max_sdk\":21,"
+                + "\"created_at\":1000}";
+        VersionModel v = VersionModel.fromJson(new JSONObject(json));
+        assertEquals("v1", v.id);
+        assertEquals("app1", v.appId);
+        assertEquals("1.0", v.versionName);
+        assertEquals(10, v.versionCode);
+        assertEquals("/dl.apk", v.fileUrl);
+        assertEquals("Bug fixes", v.changelog);
+        assertEquals(7, v.minSdk);
+        assertEquals(21, v.maxSdk);
+        assertEquals(1000L, v.createdAt);
+    }
+
+    @Test
+    public void fromJson_missingFields_useDefaults() throws Exception {
+        VersionModel v = VersionModel.fromJson(new JSONObject("{}"));
+        assertEquals("", v.id);
+        assertEquals("", v.versionName);
+        assertEquals(0, v.versionCode);
+        assertEquals(0L, v.createdAt);
+    }
+
+    @Test
+    public void fromJson_nullObject_returnsNull() {
+        assertNull(VersionModel.fromJson(null));
     }
 }

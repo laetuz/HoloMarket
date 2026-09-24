@@ -20,7 +20,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import id.neotica.holomarket.R;
-import id.neotica.holomarket.ui.feature.detail.AppDetailActivity;
+import id.neotica.holomarket.feature.detail.ui.AppDetailActivity;
 import id.neotica.holomarket.utils.ImageUrlHelper;
 
 /**
