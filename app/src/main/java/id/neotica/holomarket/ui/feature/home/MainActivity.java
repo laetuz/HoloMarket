@@ -31,7 +31,7 @@ import id.neotica.holomarket.network.ApiCallback;
 import id.neotica.holomarket.network.ApiTask;
 import id.neotica.holomarket.ui.components.InfiniteAppsAdapter;
 import id.neotica.holomarket.ui.components.SectionListBuilder;
-import id.neotica.holomarket.ui.feature.auth.LoginActivity;
+import id.neotica.holomarket.feature.auth.login.ui.LoginActivity;
 import id.neotica.holomarket.ui.feature.category.CategoriesActivity;
 import id.neotica.holomarket.ui.feature.settings.SettingsActivity;
 import id.neotica.holomarket.utils.AuthManager;
@@ -262,6 +262,5 @@ public class MainActivity extends Activity {
             }
         }).execute();
     }
-
 
 }

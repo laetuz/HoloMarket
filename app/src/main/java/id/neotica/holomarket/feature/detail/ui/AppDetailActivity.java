@@ -37,7 +37,7 @@ import java.util.Locale;
 import id.neotica.holomarket.R;
 import id.neotica.holomarket.feature.detail.domain.AppDetailModel;
 import id.neotica.holomarket.model.VersionModel;
-import id.neotica.holomarket.ui.feature.auth.LoginActivity;
+import id.neotica.holomarket.feature.auth.login.ui.LoginActivity;
 import id.neotica.holomarket.feature.detail.contract.AppDetailView;
 import id.neotica.holomarket.feature.detail.domain.InstallState;
 import id.neotica.holomarket.feature.detail.contract.RatingsView;

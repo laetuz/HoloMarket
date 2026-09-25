@@ -27,7 +27,7 @@ public class AppAdapter extends ArrayAdapter<AppModel> {
     }
 
     private static class ViewHolder {
-        TextView tvtitle;
+        TextView tvTitle;
         ImageView ivIcon;
     }
 
@@ -41,7 +41,7 @@ public class AppAdapter extends ArrayAdapter<AppModel> {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_app, parent, false);
 
-            viewHolder.tvtitle = (TextView) convertView.findViewById(R.id.tv_title);
+            viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_title);
             viewHolder.ivIcon = (ImageView) convertView.findViewById(R.id.iv_icon);
             convertView.setTag(viewHolder);
         } else {
@@ -49,7 +49,7 @@ public class AppAdapter extends ArrayAdapter<AppModel> {
         }
 
         if (app != null) {
-            viewHolder.tvtitle.setText(app.title);
+            viewHolder.tvTitle.setText(app.title);
 
             if (!TextUtils.isEmpty(app.iconUrl)) {
 

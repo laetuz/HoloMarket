@@ -17,9 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.feature.auth.LoginActivity" />
-        <activity android:name=".ui.feature.auth.ForgotPasswordActivity" />
-        <activity android:name=".ui.feature.auth.RegisterActivity" />
+        <activity android:name=".feature.auth.login.ui.LoginActivity" />
+        <activity android:name=".feature.auth.forgotpassword.ui.ForgotPasswordActivity" />
+        <activity android:name=".feature.auth.register.ui.RegisterActivity" />
         <activity android:name=".ui.feature.settings.SettingsActivity" />
         <activity android:name=".ui.feature.category.CategoriesActivity" />
         <activity android:name=".feature.detail.ui.AppDetailActivity" />
