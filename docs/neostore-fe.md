@@ -4,11 +4,11 @@
 - App: neostore-fe
 - Version: v0.0.20
 - Target Protocol: v1.1
-- Target Audience: Legacy Android Devices (Eclair / Froyo / Gingerbread)
+- Target Audience: Legacy Android Devices (Donut / Eclair / Froyo / Gingerbread)
 - Role: The native portal to browse and install ecosystem APKs.
 
 ## 2. Technology Stack & Constraints
-- Minimum API: `minSdkVersion 7` (Android 2.1)
+- Minimum API: `minSdkVersion 3` (Android 1.6)
 - Target API: `targetSdkVersion 21` (Lollipop)
 - Language: Java 7
 - Network: `HttpURLConnection`, `AsyncTask`, `org.json` (Strictly NO Retrofit/OkHttp)
@@ -29,15 +29,15 @@ To prevent instant force-closes on API 7, all code must adhere to these historic
 
 ## 4. Current Focus (Milestone 0.2: Authentication & Navigation)
 *Objective: Allow users to log in without relying on modern ActionBars.*
-- [ ] Redesigned homepage, with section lists to know which page we are going.
-- [ ] Build `LoginActivity.java` UI.
-- [ ] Create `AuthManager` to handle `SharedPreferences` JWT storage.
-- [ ] Wire up POST request to `neoserver/auth` endpoint.
+- [x] Redesigned homepage, with section lists to know which page we are going.
+- [x] Build `LoginActivity.java` UI.
+- [x] Create `AuthManager` to handle `SharedPreferences` JWT storage.
+- [x] Wire up POST request to `neoserver/auth` endpoint.
 
 ## 5. Backlog (Upcoming Milestones)
-- [ ] Milestone 0.3 (Media): Integrate `Universal Image Loader` (v1.9.5) to fetch `icon_url` from the feed.
-- [ ] Milestone 0.4 (Updates): Implement "Self-Update" check on app launch hitting `/apps/id.neotica.neostore/latest`.
-- [ ] Milestone 1.0: Final UI Polish & Release.
+- [x] Milestone 0.3 (Media): Integrate `Universal Image Loader` (v1.9.5) to fetch `icon_url` from the feed.
+- [x] Milestone 0.4 (Updates): Implement "Self-Update" check on app launch hitting `/apps/id.neotica.neostore/latest`.
+- [x] Milestone 1.0: Final UI Polish & Release.
 
 ## 6. Completed Features
 - [x] Global Crash Catcher utility mapped to SharedPreferences.
