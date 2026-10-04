@@ -61,3 +61,10 @@ AUTH_BASE_URL
 ```sh
 ./gradlew assembleDebug
 ```
+
+## License
+
+- **Code** — GNU General Public License v3.0 (see [`LICENSE`](LICENSE)).
+- **Documentation** (`docs/`) — MIT License (see [`docs/LICENSE`](docs/LICENSE)), so the architecture guide stays reusable.
+- **Third-party components** — see [`THIRD_PARTY_NOTICES`](THIRD_PARTY_NOTICES).
+- **Brand** — "HoloMarket" / "Neotica.id" names and logos are trademarks of Neotica.id; see [`TRADEMARKS.md`](TRADEMARKS.md).

@@ -54,6 +54,7 @@ public class AppListActivity extends Activity {
 
     private static final String INTENT_URL_TOPIC = "URL_TOPIC";
     private static final String INTENT_PACKAGE_NAME = "PACKAGE_NAME";
+    public static final String INTENT_SEARCH_QUERY = "SEARCH_QUERY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,14 @@ public class AppListActivity extends Activity {
             currentCategory = intent.getStringExtra(INTENT_URL_TOPIC);
         }
 
+        String initialQuery = null;
+        if (intent != null && intent.hasExtra(INTENT_SEARCH_QUERY)) {
+            initialQuery = intent.getStringExtra(INTENT_SEARCH_QUERY);
+            if (initialQuery != null) {
+                currentSearchQuery = initialQuery;
+            }
+        }
+
         String categoryTitle = "App List";
         if (currentCategory != null && currentCategory.length() > 0) {
             String displayName = intent.getStringExtra(INTENT_URL_TOPIC + "_DISPLAY");
@@ -75,14 +84,23 @@ public class AppListActivity extends Activity {
             } else {
                 categoryTitle = currentCategory;
             }
+        } else if (initialQuery != null && initialQuery.length() > 0) {
+            categoryTitle = initialQuery;
         }
         TopBarHelper.setup(this, categoryTitle, true);
 
+        boolean developerMode = initialQuery != null && initialQuery.length() > 0;
+
         View topBarBack = findViewById(R.id.top_bar_back);
-        topBarBack.setNextFocusDownId(R.id.et_search);
+        topBarBack.setNextFocusDownId(developerMode ? R.id.lv_main : R.id.et_search);
 
         etSearch = (EditText) findViewById(R.id.et_search);
         btnSearch = (Button) findViewById(R.id.btn_search);
+
+        View searchRow = findViewById(R.id.search_row);
+        if (developerMode) {
+            searchRow.setVisibility(View.GONE);
+        }
 
         listView = (ListView) findViewById(R.id.lv_main);
         appList = new ArrayList<>();

@@ -1,0 +1,41 @@
+Third-Party Notices
+===================
+
+HoloMarket is distributed under the GNU General Public License v3.0 (see
+`LICENSE`), except the `docs/` directory which is under the MIT License
+(see `docs/LICENSE`). It includes or depends on the following third-party
+components.
+
+Bundled in the distributed application
+--------------------------------------
+
+1. Universal Image Loader
+   com.nostra13.universalimageloader:universal-image-loader:1.9.5
+   Copyright (c) Sergey Tarasevich
+   Licensed under the Apache License, Version 2.0
+   http://www.apache.org/licenses/LICENSE-2.0
+
+2. Android Open Source Project (Android SDK / framework classes)
+   Copyright (c) The Android Open Source Project
+   Licensed under the Apache License, Version 2.0
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Build- and test-only (not distributed in the app)
+-------------------------------------------------
+
+3. JUnit 4.12
+   junit:junit:4.12
+   Licensed under the Eclipse Public License 1.0
+
+4. Mockito 1.10.19
+   org.mockito:mockito-core:1.10.19
+   Licensed under the MIT License
+
+5. org.json 20140107
+   org.json:json:20140107
+   Licensed under the JSON License (used for local unit tests only)
+
+Compatibility note
+------------------
+The Apache License 2.0 (Universal Image Loader, Android Open Source Project)
+is compatible with the GNU GPL v3.0 under which this project is distributed.

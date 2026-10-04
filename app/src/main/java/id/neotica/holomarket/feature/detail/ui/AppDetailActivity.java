@@ -43,6 +43,7 @@ import id.neotica.holomarket.feature.detail.domain.InstallState;
 import id.neotica.holomarket.feature.detail.contract.RatingsView;
 import id.neotica.holomarket.feature.detail.presenter.AppDetailPresenter;
 import id.neotica.holomarket.feature.detail.presenter.RatingsPresenter;
+import id.neotica.holomarket.ui.feature.applist.AppListActivity;
 import id.neotica.holomarket.utils.ImageUrlHelper;
 import id.neotica.holomarket.utils.TopBarHelper;
 
@@ -154,7 +155,7 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
     }
 
     @Override
-    public void renderAppDetail(AppDetailModel detail) {
+    public void renderAppDetail(final AppDetailModel detail) {
         tvTitle.setText(detail.title);
 
         TextView topBarTitle = (TextView) findViewById(R.id.top_bar_title);
@@ -185,8 +186,17 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
         if (detail.developer != null && detail.developer.length() > 0) {
             tvDeveloper.setText(detail.developer);
             tvDeveloper.setVisibility(View.VISIBLE);
+            tvDeveloper.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(AppDetailActivity.this, AppListActivity.class);
+                    intent.putExtra(AppListActivity.INTENT_SEARCH_QUERY, detail.developer);
+                    startActivity(intent);
+                }
+            });
         } else {
             tvDeveloper.setVisibility(View.GONE);
+            tvDeveloper.setOnClickListener(null);
         }
 
         if (detail.categories.size() > 0) {

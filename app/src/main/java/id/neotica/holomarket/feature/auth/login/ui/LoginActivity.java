@@ -2,9 +2,7 @@ package id.neotica.holomarket.feature.auth.login.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import id.neotica.holomarket.R;
+import id.neotica.holomarket.feature.auth.common.ui.PasswordEyeToggle;
 import id.neotica.holomarket.feature.auth.forgotpassword.ui.ForgotPasswordActivity;
 import id.neotica.holomarket.feature.auth.login.contract.LoginView;
 import id.neotica.holomarket.feature.auth.login.presenter.LoginPresenter;
@@ -43,26 +42,7 @@ public class LoginActivity extends Activity implements LoginView {
         etPassword = (EditText) findViewById(R.id.et_password);
         Button btnLogin = (Button) findViewById(R.id.btn_login);
 
-        etPassword.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Drawable drawableRight = etPassword.getCompoundDrawables()[2];
-                    if (drawableRight != null && event.getRawX() >= (etPassword.getRight() - drawableRight.getBounds().width() - etPassword.getPaddingRight())) {
-                        if (etPassword.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-                            etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                            etPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_open, 0);
-                        } else {
-                            etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                            etPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_closed, 0);
-                        }
-                        etPassword.setSelection(etPassword.getText().length());
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
+        PasswordEyeToggle.attach(etPassword, R.drawable.ic_eye_open, R.drawable.ic_eye_closed);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

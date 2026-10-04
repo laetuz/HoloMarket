@@ -47,6 +47,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textSize="14sp"
+                android:textColor="#5D6EE0"
+                android:focusable="true"
+                android:background="@drawable/bg_focusable"
                 android:visibility="gone" />
 
             <TextView

@@ -245,3 +245,7 @@ ProfileRepository repo = callback -> callback.onResult(new ProfileModel("Ada"));
 new ProfilePresenter(repo).load();
 verify(view).renderProfile("Ada");
 ```
+
+---
+
+*This document is part of `docs/` and is licensed under the MIT License (see [`LICENSE`](LICENSE) in this directory). © 2026 Neotica.id.*

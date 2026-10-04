@@ -59,6 +59,7 @@ The hardware-input pass (v1.4.3) made section rows, screenshots, "Read more", th
 - `feature/auth/{login,register,forgotpassword}`, each `{contract,presenter,ui}`; `login` also has `domain/LoginResult`.
 - Presenters own validation, network (seams `requestLogin`/`requestUsername`/`requestRegister`/`requestForgot`), `AuthManager` writes, and analytics; Activities only render.
 - `LoginPresenter` builds `AuthManager` from `Context` (same pattern as detail/ratings).
+- **Password eye toggle** — shared `feature/auth/common/ui/PasswordEyeToggle` (used by login + register). It keeps `inputType=textPassword` and swaps the **transformation method** (not the input type), consumes the whole eye gesture (DOWN+UP, view-local coords), and preserves the cursor — fixes the previous "tapping the eye selects the whole field" bug.
 
 ## Ratings / reviews
 
