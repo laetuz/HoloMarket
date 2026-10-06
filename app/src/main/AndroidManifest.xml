@@ -20,7 +20,7 @@
         <activity android:name=".feature.auth.login.ui.LoginActivity" />
         <activity android:name=".feature.auth.forgotpassword.ui.ForgotPasswordActivity" />
         <activity android:name=".feature.auth.register.ui.RegisterActivity" />
-        <activity android:name=".ui.feature.settings.SettingsActivity" />
+        <activity android:name=".feature.settings.ui.SettingsActivity" />
         <activity android:name=".feature.category.ui.CategoriesActivity" />
         <activity android:name=".feature.detail.ui.AppDetailActivity" />
         <activity

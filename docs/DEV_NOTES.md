@@ -2,21 +2,8 @@
 
 Open items, known limitations, and environment quirks. Not a spec — living notes for the dev machine.
 
-## MVP migration (`feature/<name>/{contract,domain,presenter,ui}`)
-
-Convention + rules: see `ARCHITECTURE.md`. Tick each feature once migrated.
-
-- [x] detail
-- [x] auth (login, register, forgotpassword)
-- [x] applist
-- [x] category
-- [ ] settings
-- [x] home (MainActivity)
-
-> Remove this section once every feature is migrated.
-
-### For me to check
-- **Shared components** — `InfiniteAppsAdapter` / `SectionListBuilder` are still in `ui/components/`; decide whether to relocate them to a shared `common/` package (they're the last thing under `ui/` once `settings` migrates).
+## For me to check
+- **Shared components** — `InfiniteAppsAdapter` / `SectionListBuilder` now live alone under `ui/components/`; decide whether to relocate them to a shared `common/` package.
 - **Home feed payload** — `HomePresenter` passes raw `List<JSONObject>` into `InfiniteAppsAdapter`; consider a typed `AppFeedItem` model (parse in the presenter, adapter consumes models) later.
 - **Known fixes to evaluate later** (kept as-is for now) — public `GET /collections/organizer`, server-driven `GET /categories` (see TODO below).
 
