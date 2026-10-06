@@ -29,7 +29,7 @@ import id.neotica.holomarket.feature.home.domain.AppTopic;
 import id.neotica.holomarket.feature.home.presenter.HomePresenter;
 import id.neotica.holomarket.ui.components.InfiniteAppsAdapter;
 import id.neotica.holomarket.ui.components.SectionListBuilder;
-import id.neotica.holomarket.ui.feature.category.CategoriesActivity;
+import id.neotica.holomarket.feature.category.ui.CategoriesActivity;
 import id.neotica.holomarket.ui.feature.settings.SettingsActivity;
 import id.neotica.holomarket.utils.CrashCatcher;
 import id.neotica.holomarket.utils.TopBarHelper;
