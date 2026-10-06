@@ -17,7 +17,7 @@ import id.neotica.holomarket.feature.auth.forgotpassword.ui.ForgotPasswordActivi
 import id.neotica.holomarket.feature.auth.login.contract.LoginView;
 import id.neotica.holomarket.feature.auth.login.presenter.LoginPresenter;
 import id.neotica.holomarket.feature.auth.register.ui.RegisterActivity;
-import id.neotica.holomarket.ui.feature.home.MainActivity;
+import id.neotica.holomarket.feature.home.ui.MainActivity;
 import id.neotica.holomarket.utils.CrashCatcher;
 import id.neotica.holomarket.utils.TopBarHelper;
 

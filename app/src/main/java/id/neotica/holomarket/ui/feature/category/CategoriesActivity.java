@@ -21,7 +21,7 @@ import id.neotica.holomarket.network.ApiCallback;
 import id.neotica.holomarket.network.ApiTask;
 import id.neotica.holomarket.ui.components.InfiniteAppsAdapter;
 import id.neotica.holomarket.ui.components.SectionListBuilder;
-import id.neotica.holomarket.ui.feature.applist.AppListActivity;
+import id.neotica.holomarket.feature.applist.ui.AppListActivity;
 import id.neotica.holomarket.utils.CrashCatcher;
 import id.neotica.holomarket.utils.TopBarHelper;
 

@@ -1,4 +1,4 @@
-package id.neotica.holomarket.ui.feature.home;
+package id.neotica.holomarket.feature.home.domain;
 
 /**
  * Created by ryomartin on 16/04/26.

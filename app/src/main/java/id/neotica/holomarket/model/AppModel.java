@@ -1,5 +1,9 @@
 package id.neotica.holomarket.model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,5 +48,40 @@ public class AppModel {
         this.developer = developer;
         this.categories = categories;
         this.screenshots = screenshots;
+    }
+
+    public static AppModel fromJson(JSONObject obj) {
+        if (obj == null) {
+            return null;
+        }
+
+        String iconUrl = obj.isNull("icon_url") ? "" : obj.optString("icon_url", "");
+
+        List<String> categories = new ArrayList<String>();
+        JSONArray categoriesArray = obj.optJSONArray("categories");
+        if (categoriesArray != null) {
+            for (int i = 0; i < categoriesArray.length(); i++) {
+                categories.add(categoriesArray.optString(i));
+            }
+        }
+
+        List<String> screenshots = new ArrayList<String>();
+        JSONArray screenshotsArray = obj.optJSONArray("screenshots");
+        if (screenshotsArray != null) {
+            for (int i = 0; i < screenshotsArray.length(); i++) {
+                screenshots.add(screenshotsArray.optString(i));
+            }
+        }
+
+        return new AppModel(
+                obj.optString("package_name", ""),
+                obj.optString("title", ""),
+                obj.optString("description", ""),
+                iconUrl,
+                obj.optString("category", ""),
+                obj.optString("developer", ""),
+                categories,
+                screenshots
+        );
     }
 }

@@ -8,15 +8,16 @@ Convention + rules: see `ARCHITECTURE.md`. Tick each feature once migrated.
 
 - [x] detail
 - [x] auth (login, register, forgotpassword)
-- [ ] applist
+- [x] applist
 - [ ] category
 - [ ] settings
-- [ ] home (MainActivity)
+- [x] home (MainActivity)
 
 > Remove this section once every feature is migrated.
 
 ### For me to check
-- **Shared components** — `InfiniteAppsAdapter` / `SectionListBuilder` are still in `ui/components/`; decide whether to relocate them to a shared `common/` package (after `home` + `category` migrate).
+- **Shared components** — `InfiniteAppsAdapter` / `SectionListBuilder` are still in `ui/components/`; decide whether to relocate them to a shared `common/` package (after `category` migrates).
+- **Home feed payload** — `HomePresenter` passes raw `List<JSONObject>` into `InfiniteAppsAdapter`; consider a typed `AppFeedItem` model (parse in the presenter, adapter consumes models) later.
 - **Known fixes to evaluate later** (kept as-is for now) — public `GET /collections/organizer`, server-driven `GET /categories` (see TODO below).
 
 ## Trackball / D-pad navigation gaps

@@ -43,7 +43,7 @@ import id.neotica.holomarket.feature.detail.domain.InstallState;
 import id.neotica.holomarket.feature.detail.contract.RatingsView;
 import id.neotica.holomarket.feature.detail.presenter.AppDetailPresenter;
 import id.neotica.holomarket.feature.detail.presenter.RatingsPresenter;
-import id.neotica.holomarket.ui.feature.applist.AppListActivity;
+import id.neotica.holomarket.feature.applist.ui.AppListActivity;
 import id.neotica.holomarket.utils.ImageUrlHelper;
 import id.neotica.holomarket.utils.TopBarHelper;
 
