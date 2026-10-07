@@ -21,29 +21,30 @@
   <img width="320" height="480" alt="2014_06_25_23 35 51" src="https://github.com/user-attachments/assets/e3e6dbbe-db4f-4acb-877d-89cd7776e715" />
 </details> -->
 
-Legacy Android app store client targeting **Android 2.1+ (API 7)** — Eclair / Froyo / Gingerbread.
+Legacy Android app store client with `minSdkVersion 3` (Android 1.5+ / API 3, Cupcake) — practically exercised on Eclair / Froyo / Gingerbread.
 
 Built to solve the TLS/SSL certificate deprecation wall that breaks standard web browsing on 2010–2013 hardware. HoloMarket speaks raw HTTP/JSON to give early Android devices a functional, on-device package manager again.
 
 ## Features
 
-- **Browse apps** by category (APPLICATION, GAME) with paginated feeds
-- **Featured apps** carousel on the home screen
-- **Search** apps by keyword
-- **App detail** page with version history, app icon, and download
-- **APK download** via `DownloadTask` with progress bar and auto-install via system package installer
-- **Authentication** (login / register) with JWT stored in `SharedPreferences`
-- **Username** fetched from API and cached
-- **Settings** screen with logout and 18+ content toggle
-- **CrashCatcher** — saves last crash stacktrace and shows it on next launch
+- **Browse apps** by category with paginated feeds and collections
+- **Featured apps** carousels (home + categories)
+- **Search** apps by keyword, or tap a developer to list their apps
+- **App detail** page with screenshots, version history, developer, and install state (Download / Update / Open)
+- **Ratings & reviews** — rate an app; update or delete your own review (login required)
+- **APK download** via `DownloadTask` with progress bar and auto-install via the system package installer
+- **Authentication** (login / register / forgot password) with JWT stored in `SharedPreferences`
+- **Settings** screen with self-update check, logout, and 18+ content toggle
+- **Trackball / D-pad navigation** — focusable rows with an orange selection highlight
+- **CrashCatcher** — saves the last crash stacktrace and shows it on next launch (current build only)
 
 ## Downloads
-You can just go to the [releases](https://github.com/laetuz/HoloMarket/releases) section or [Download here](https://github.com/laetuz/HoloMarket/releases/download/v1.0.1/HoloMarket.apk)
+You can just go to the [releases](https://github.com/laetuz/HoloMarket/releases) section or [Download here](https://github.com/laetuz/HoloMarket/releases/download/v1.4.5/HoloMarket.apk)
 
 ## Prerequisites
 
 - Android Studio 2.3.2
-- Android SDK 7 (minimum) / SDK 21 (target)
+- Android SDK 3 (minimum) / SDK 21 (target)
 - JDK 8
 
 ## local.properties
@@ -54,6 +55,7 @@ Required (gitignored). Must define:
 BASE_URL
 FILE_BASE_URL
 AUTH_BASE_URL
+NEOMETRICS_BASE_URL
 ```
 
 ## Build

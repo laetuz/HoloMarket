@@ -33,8 +33,8 @@ The hardware-input pass (v1.4.3) made section rows, screenshots, "Read more", th
 
 ## API-level caveats
 
-- Manifest `minSdkVersion` is **3** (Android 1.5+), but `android.util.Base64` is **API 8**. `AuthManager.getUsernameFromToken()` guards it with `try/catch`, so it degrades rather than crashing on API 3–7 — but don't add new API-8+ calls without a similar guard.
-- The real crash-history culprit was `ImageButton.setColorFilter(int)` (API 16). New icon tinting must use `Drawable.setColorFilter(int, PorterDuff.Mode)` (API 1).
+- **`android.util.Base64` (API 8)** — still referenced in `AuthManager.getUsernameFromToken()` (`AuthManager.java:106`). It's guarded by `catch (Throwable)`, so on API 3–7 it returns `null` instead of crashing (Settings falls back to "User"; ratings simply don't match an own review). It's only reached when no username is stored; on API 8+ it works normally. Keep guarding any new API-8+ calls the same way.
+- **`ImageButton.setColorFilter(int)` (API 16) — resolved.** The only tinting left is API-1 `Drawable.setColorFilter(int, PorterDuff.Mode)` in `TopBarHelper.tintDrawable`; no `ImageButton.setColorFilter` remains. Keep it that way (regression guard).
 
 ## App detail (MVP)
 
