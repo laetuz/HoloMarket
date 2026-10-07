@@ -91,7 +91,7 @@ public class CategoriesActivity extends Activity implements CategoryView {
     @Override
     public void renderFeatured(List<JSONObject> items) {
         TextView tvFeaturedTitle = (TextView) featuredView.findViewById(R.id.tv_featured_title);
-        tvFeaturedTitle.setText("Featured in " + parentDisplayName);
+        tvFeaturedTitle.setText(getString(R.string.category_featured_in, parentDisplayName));
         featuredView.setVisibility(View.VISIBLE);
 
         InfiniteAppsAdapter.setupGallery(galleryFeatured, this, items);

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_featured">Featured</string>
+    <string name="home_welcome">Hello user!</string>
+    <string name="home_error_support_suffix">\n\nContact support: martin@neotica.id\nOr visit our website</string>
+</resources>

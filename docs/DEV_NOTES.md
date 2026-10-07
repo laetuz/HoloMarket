@@ -3,6 +3,7 @@
 Open items, known limitations, and environment quirks. Not a spec — living notes for the dev machine.
 
 ## For me to check
+- **Localization** — layouts/activities/utils use `res/values/strings_<feature>.xml` (+ `strings_common.xml`); **presenter messages are still English literals** (not localized). Proper fix later: presenters emit error keys/codes and the view localizes them.
 - **Shared components** — `InfiniteAppsAdapter` / `SectionListBuilder` now live alone under `ui/components/`; decide whether to relocate them to a shared `common/` package.
 - **Home feed payload** — `HomePresenter` passes raw `List<JSONObject>` into `InfiniteAppsAdapter`; consider a typed `AppFeedItem` model (parse in the presenter, adapter consumes models) later.
 - **Known fixes to evaluate later** (kept as-is for now) — public `GET /collections/organizer`, server-driven `GET /categories` (see TODO below).

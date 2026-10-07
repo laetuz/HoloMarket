@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shared labels -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_reload">Reload</string>
+    <string name="common_error">Error</string>
+    <string name="common_close">Close</string>
+    <string name="common_download">Download</string>
+    <string name="common_login">Login</string>
+    <string name="common_register">Register</string>
+    <string name="common_loading">Loading...</string>
+    <string name="common_username">Username</string>
+    <string name="common_email">Email</string>
+    <string name="common_password">Password</string>
+    <string name="common_app_screenshot">App screenshot</string>
+    <string name="common_error_enter_username">Enter username</string>
+    <string name="common_error_enter_email">Enter email</string>
+    <string name="common_error_enter_password">Enter password</string>
+
+    <!-- CrashCatcher -->
+    <string name="crash_detected_title">Crash Detected!</string>
+    <string name="crash_clear_close">Clear &amp; Close</string>
+
+    <!-- DownloadTask -->
+    <string name="download_progress">Downloading %1$s...</string>
+    <string name="download_failed">Download failed: %1$s</string>
+    <string name="download_complete">Download complete!</string>
+    <string name="download_open_failed">Failed to open installer.</string>
+</resources>

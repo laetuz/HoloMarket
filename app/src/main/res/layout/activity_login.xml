@@ -18,7 +18,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign in to continue"
+        android:text="@string/auth_login_prompt"
         android:textSize="16sp"
         android:gravity="center"
         android:layout_marginBottom="32dp" />
@@ -27,7 +27,7 @@
         android:id="@+id/et_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username"
+        android:hint="@string/common_username"
         android:singleLine="true"
         android:layout_marginBottom="16dp" />
 
@@ -35,7 +35,7 @@
         android:id="@+id/et_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="@string/common_password"
         android:singleLine="true"
         android:inputType="textPassword"
         android:drawableRight="@drawable/ic_eye_closed"
@@ -46,19 +46,19 @@
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login" />
+        android:text="@string/common_login" />
 
     <Button
         android:id="@+id/btn_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register" />
+        android:text="@string/common_register" />
 
     <TextView
         android:id="@+id/tv_forgot_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Forgot Password?"
+        android:text="@string/auth_login_forgot"
         android:textSize="14sp"
         android:textColor="#FF4081"
         android:gravity="center"

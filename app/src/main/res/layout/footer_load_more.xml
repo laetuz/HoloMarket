@@ -10,7 +10,7 @@
         android:id="@+id/btn_load_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Load More Apps"
+        android:text="@string/applist_load_more"
         android:paddingLeft="24dp"
         android:paddingRight="24dp" />
 
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="All items are loaded."
+        android:text="@string/applist_all_loaded"
         android:visibility="gone" />
 
 </LinearLayout>

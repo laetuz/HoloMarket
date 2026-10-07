@@ -14,6 +14,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import id.neotica.holomarket.R;
+
 /**
  * Created by ryomartin on 21/03/26.
  */
@@ -40,7 +42,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
         // Create a classic horizontal progress bar
         progressDialog = new ProgressDialog(context);
         String name = displayName != null ? displayName : fileName;
-        progressDialog.setMessage("Downloading " + name + "...");
+        progressDialog.setMessage(context.getString(R.string.download_progress, name));
         progressDialog.setIndeterminate(false);
         progressDialog.setMax(100);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -121,9 +123,9 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
         } catch (Exception e) { }
 
         if (result != null && result.startsWith("Error")) {
-            Toast.makeText(context, "Download failed: " + result, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, context.getString(R.string.download_failed, result), Toast.LENGTH_LONG).show();
         } else if (result != null) {
-            Toast.makeText(context, "Download complete!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.download_complete, Toast.LENGTH_SHORT).show();
             // Automatically launch the installer!
             installApk(result);
         }
@@ -138,7 +140,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
         try {
             context.startActivity(intent);
         } catch (Exception e) {
-            Toast.makeText(context, "Failed to open installer.", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.download_open_failed, Toast.LENGTH_LONG).show();
         }
     }
 }

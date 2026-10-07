@@ -37,7 +37,7 @@ public class SettingsActivity extends Activity implements SettingsView {
         setContentView(R.layout.activity_settings);
         CrashCatcher.showCrashLogIfAny(this);
 
-        TopBarHelper.setup(this, "Settings", true);
+        TopBarHelper.setup(this, getString(R.string.settings_title), true);
 
         presenter = new SettingsPresenter(this);
         presenter.attach(this);
@@ -57,22 +57,22 @@ public class SettingsActivity extends Activity implements SettingsView {
                     input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
                     new AlertDialog.Builder(SettingsActivity.this)
-                            .setTitle("18+ Content")
-                            .setMessage("Enter password to enable 18+ content:")
+                            .setTitle(R.string.settings_adult_title)
+                            .setMessage(R.string.settings_adult_prompt)
                             .setView(input)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            .setPositiveButton(R.string.common_ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String password = input.getText().toString();
                                     if (presenter.verifyAdultPassword(password)) {
                                         presenter.setAdultContent(true);
                                     } else {
-                                        Toast.makeText(SettingsActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SettingsActivity.this, R.string.settings_wrong_password, Toast.LENGTH_SHORT).show();
                                         setAdultChecked(false);
                                     }
                                 }
                             })
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            .setNegativeButton(R.string.common_cancel, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     setAdultChecked(false);
@@ -100,10 +100,10 @@ public class SettingsActivity extends Activity implements SettingsView {
         });
 
         TextView tvChangelog = (TextView) findViewById(R.id.tv_changelog);
-        tvChangelog.setText("- Optimized for Android 1.5+\n- New category browsing with galleries\n- Performance improvements");
+        tvChangelog.setText(R.string.settings_changelog_text);
 
         TextView tvCredits = (TextView) findViewById(R.id.tv_credits);
-        tvCredits.setText("HoloMarket\nPowered by Neotica\n© 2026 Neotica");
+        tvCredits.setText(R.string.settings_credits_text);
 
         Button btnCheckUpdate = (Button) findViewById(R.id.btn_check_update);
         btnCheckUpdate.setOnClickListener(new View.OnClickListener() {
@@ -134,30 +134,30 @@ public class SettingsActivity extends Activity implements SettingsView {
 
     @Override
     public void renderVersion(String versionName, int versionCode) {
-        tvVersion.setText("Version " + versionName + " (" + versionCode + ")");
+        tvVersion.setText(getString(R.string.settings_version, versionName, versionCode));
     }
 
     @Override
     public void showUpToDate() {
         new AlertDialog.Builder(this)
-                .setTitle("Up to date")
-                .setMessage("HoloMarket is up to date.")
-                .setPositiveButton("OK", null)
+                .setTitle(R.string.settings_up_to_date_title)
+                .setMessage(R.string.settings_up_to_date_message)
+                .setPositiveButton(R.string.common_ok, null)
                 .show();
     }
 
     @Override
     public void showUpdateAvailable(String versionName) {
         new AlertDialog.Builder(this)
-                .setTitle("Update available")
-                .setMessage("Version " + versionName + " is available.")
-                .setPositiveButton("Download", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.settings_update_available_title)
+                .setMessage(getString(R.string.settings_update_available_message, versionName))
+                .setPositiveButton(R.string.common_download, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         presenter.downloadUpdate();
                     }
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(R.string.common_cancel, null)
                 .show();
     }
 
@@ -168,7 +168,7 @@ public class SettingsActivity extends Activity implements SettingsView {
 
     @Override
     public void navigateToMain() {
-        Toast.makeText(SettingsActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
+        Toast.makeText(SettingsActivity.this, R.string.settings_logged_out, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

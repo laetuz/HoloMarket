@@ -80,12 +80,12 @@ public class MainActivity extends Activity implements HomeView {
             }
         });
 
-        TopBarHelper.setup(this, "HoloMarket", false);
+        TopBarHelper.setup(this, getString(R.string.app_name), false);
     }
 
     @Override
     public void showSettings() {
-        TopBarHelper.setup(this, "HoloMarket", false, R.drawable.ic_settings,
+        TopBarHelper.setup(this, getString(R.string.app_name), false, R.drawable.ic_settings,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -135,15 +135,15 @@ public class MainActivity extends Activity implements HomeView {
     @Override
     public void showError(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("Error")
+                .setTitle(R.string.common_error)
                 .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.common_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
                 })
-                .setNegativeButton("Reload", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.common_reload, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -153,11 +153,7 @@ public class MainActivity extends Activity implements HomeView {
 
         AlertDialog dialog = builder.create();
 
-        SpannableString msg = new SpannableString(
-                message
-                        + "\n\nContact support: martin@neotica.id"
-                        + "\nOr visit our website"
-        );
+        SpannableString msg = new SpannableString(message + getString(R.string.home_error_support_suffix));
         Linkify.addLinks(msg, Linkify.EMAIL_ADDRESSES);
         int websiteStart = msg.toString().indexOf("website");
         msg.setSpan(new ClickableSpan() {

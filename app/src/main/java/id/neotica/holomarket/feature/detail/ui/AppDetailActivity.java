@@ -71,7 +71,7 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_detail);
 
-        TopBarHelper.setup(this, "App Detail", true);
+        TopBarHelper.setup(this, getString(R.string.detail_title), true);
 
         View topBarBack = findViewById(R.id.top_bar_back);
         topBarBack.setNextFocusDownId(R.id.bt_download);
@@ -120,11 +120,11 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
                 if (descExpanded) {
                     tvDesc.setMaxLines(3);
                     tvDesc.setEllipsize(TextUtils.TruncateAt.END);
-                    tvReadMore.setText("Read more");
+                    tvReadMore.setText(R.string.detail_read_more);
                 } else {
                     tvDesc.setMaxLines(Integer.MAX_VALUE);
                     tvDesc.setEllipsize(null);
-                    tvReadMore.setText("Show less");
+                    tvReadMore.setText(R.string.detail_show_less);
                 }
                 descExpanded = !descExpanded;
             }
@@ -143,7 +143,7 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
             currentPackageName = packageName;
             appDetailPresenter.load(packageName);
         } else {
-            Toast.makeText(this, "Error: No package provided.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.detail_no_package, Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -151,7 +151,7 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
     @Override
     public void showLoading() {
         btDownload.setEnabled(false);
-        btDownload.setText("Loading...");
+        btDownload.setText(R.string.common_loading);
     }
 
     @Override
@@ -200,7 +200,7 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
         }
 
         if (detail.categories.size() > 0) {
-            tvCategories.setText("Categories: " + join(detail.categories));
+            tvCategories.setText(getString(R.string.detail_categories, join(detail.categories)));
             tvCategories.setVisibility(View.VISIBLE);
         } else {
             tvCategories.setVisibility(View.GONE);
@@ -217,11 +217,11 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
         btDownload.setEnabled(true);
         btDownload.setVisibility(View.VISIBLE);
         if (state == InstallState.OPEN) {
-            btDownload.setText("Open");
+            btDownload.setText(R.string.detail_open);
         } else if (state == InstallState.UPDATE) {
-            btDownload.setText("Update");
+            btDownload.setText(R.string.detail_update);
         } else {
-            btDownload.setText("Download");
+            btDownload.setText(R.string.common_download);
         }
     }
 
@@ -229,16 +229,16 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
     public void showLoadError(String message) {
         final String packageName = currentPackageName;
         new AlertDialog.Builder(this)
-                .setTitle("Error")
+                .setTitle(R.string.common_error)
                 .setMessage(message)
                 .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.common_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
                 })
-                .setNegativeButton("Reload", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.common_reload, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -256,18 +256,18 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
         if (launchIntent != null) {
             startActivity(launchIntent);
         } else {
-            Toast.makeText(this, "Unable to open the app.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.detail_unable_open, Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void showNoVersions() {
-        Toast.makeText(this, "No versions available.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.detail_no_versions, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showNoDownloadLink() {
-        Toast.makeText(this, "Download link not available for this version.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.detail_no_download_link, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -282,17 +282,18 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
 
         String summary;
         if (totalReviews > 0) {
-            summary = String.format(Locale.US, "%.1f", averageRating) + " \u00b7 " + totalReviews + " reviews";
+            String countText = getResources().getQuantityString(R.plurals.detail_review_count, totalReviews, totalReviews);
+            summary = String.format(Locale.US, "%.1f", averageRating) + " \u00b7 " + countText;
         } else {
-            summary = "No ratings yet";
+            summary = getString(R.string.detail_no_ratings);
         }
 
         if (!loggedIn) {
             tvRatingInfo.setText(summary);
         } else if (myRating > 0) {
-            tvRatingInfo.setText("Your rating: " + myRating + " \u00b7 " + summary);
+            tvRatingInfo.setText(getString(R.string.detail_rating_your, myRating, summary));
         } else {
-            tvRatingInfo.setText("Tap a star to rate \u00b7 " + summary);
+            tvRatingInfo.setText(getString(R.string.detail_rating_prompt, summary));
         }
 
         btnDeleteReview.setVisibility((loggedIn && myRating > 0) ? View.VISIBLE : View.GONE);
@@ -300,12 +301,12 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
 
     @Override
     public void showRatingSaved() {
-        Toast.makeText(this, "Rating saved", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.detail_rating_saved, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showReviewDeleted() {
-        Toast.makeText(this, "Review deleted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.detail_review_deleted, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -315,7 +316,7 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
 
     @Override
     public void onUnauthorized() {
-        Toast.makeText(this, "Please log in to rate.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.detail_login_to_rate, Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, LoginActivity.class));
     }
 
@@ -346,8 +347,8 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
             TextView tvChangelog = (TextView) row.findViewById(R.id.tv_changelog);
             Button btnVersionDownload = (Button) row.findViewById(R.id.btn_version_download);
 
-            tvVersionName.setText("Version " + vm.versionName + " (" + vm.versionCode + ")");
-            tvMinSdk.setText("Min SDK: " + vm.minSdk);
+            tvVersionName.setText(getString(R.string.detail_version, vm.versionName, vm.versionCode));
+            tvMinSdk.setText(getString(R.string.detail_min_sdk, vm.minSdk));
 
             if (vm.changelog != null && vm.changelog.length() > 0) {
                 tvChangelog.setText(vm.changelog);

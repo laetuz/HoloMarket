@@ -27,7 +27,7 @@ public class ForgotPasswordActivity extends Activity implements ForgotPasswordVi
         setContentView(R.layout.activity_forgot_password);
         CrashCatcher.showCrashLogIfAny(this);
 
-        TopBarHelper.setup(this, "Forgot Password", true);
+        TopBarHelper.setup(this, getString(R.string.auth_forgot_title), true);
 
         presenter = new ForgotPasswordPresenter(this);
         presenter.attach(this);
@@ -54,7 +54,7 @@ public class ForgotPasswordActivity extends Activity implements ForgotPasswordVi
 
     @Override
     public void showEmailError() {
-        etEmail.setError("Enter email");
+        etEmail.setError(getString(R.string.common_error_enter_email));
     }
 
     @Override

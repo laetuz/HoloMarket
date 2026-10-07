@@ -65,7 +65,7 @@ public class AppListActivity extends Activity implements AppListView {
             initialQuery = intent.getStringExtra(INTENT_SEARCH_QUERY);
         }
 
-        String categoryTitle = "App List";
+        String categoryTitle = getString(R.string.applist_title);
         if (currentCategory != null && currentCategory.length() > 0) {
             String displayName = intent.getStringExtra(INTENT_URL_TOPIC + "_DISPLAY");
             if (displayName != null && displayName.length() > 0) {

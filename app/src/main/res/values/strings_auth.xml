@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_login_title">Sign In</string>
+    <string name="auth_login_prompt">Sign in to continue</string>
+    <string name="auth_login_forgot">Forgot Password?</string>
+    <string name="auth_register_title">Create Account</string>
+    <string name="auth_forgot_title">Forgot Password</string>
+    <string name="auth_forgot_prompt">Enter your email to receive a reset link</string>
+    <string name="auth_forgot_send">Send Reset Link</string>
+</resources>

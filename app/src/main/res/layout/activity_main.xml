@@ -12,7 +12,7 @@
 
         <TextView
             android:id="@+id/tv_welcome"
-            android:text="Hello user!"
+            android:text="@string/home_welcome"
             android:visibility="gone"
             android:textSize="18sp"
             android:layout_marginTop="16dp"
@@ -29,7 +29,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:text="Login" />
+            android:text="@string/common_login" />
 
         <LinearLayout
             android:id="@+id/featured_container"
