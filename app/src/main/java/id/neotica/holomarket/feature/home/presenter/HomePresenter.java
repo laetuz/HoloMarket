@@ -11,7 +11,7 @@ import java.util.Map;
 
 import id.neotica.holomarket.BuildConfig;
 import id.neotica.holomarket.feature.home.contract.HomeView;
-import id.neotica.holomarket.feature.home.domain.AppTopic;
+import id.neotica.holomarket.feature.home.domain.HomeSection;
 import id.neotica.holomarket.network.ApiCallback;
 import id.neotica.holomarket.network.ApiTask;
 import id.neotica.holomarket.utils.AuthManager;
@@ -49,7 +49,7 @@ public class HomePresenter {
             } else {
                 view.showLogin();
             }
-            view.renderSections(buildTopics());
+            view.renderSections(buildSections());
         }
 
         loadFeatured();
@@ -59,14 +59,15 @@ public class HomePresenter {
         }
     }
 
-    private List<AppTopic> buildTopics() {
-        List<AppTopic> topics = new ArrayList<AppTopic>();
-        topics.add(new AppTopic("Applications", "application"));
-        topics.add(new AppTopic("Games", "game"));
+    private List<HomeSection> buildSections() {
+        List<HomeSection> sections = new ArrayList<HomeSection>();
+        sections.add(HomeSection.topic("Applications", "application"));
+        sections.add(HomeSection.topic("Games", "game"));
         if (authManager.isAdultContentEnabled()) {
-            topics.add(new AppTopic("Adult", "adult"));
+            sections.add(HomeSection.topic("Adult", "adult"));
         }
-        return topics;
+        sections.add(HomeSection.myApps("My Apps"));
+        return sections;
     }
 
     private void loadFeatured() {

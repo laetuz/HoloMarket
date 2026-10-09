@@ -3,8 +3,11 @@ package id.neotica.holomarket.feature.detail.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +25,7 @@ import android.widget.Gallery;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +48,7 @@ import id.neotica.holomarket.feature.detail.contract.RatingsView;
 import id.neotica.holomarket.feature.detail.presenter.AppDetailPresenter;
 import id.neotica.holomarket.feature.detail.presenter.RatingsPresenter;
 import id.neotica.holomarket.feature.applist.ui.AppListActivity;
+import id.neotica.holomarket.feature.downloads.service.DownloadService;
 import id.neotica.holomarket.utils.ImageUrlHelper;
 import id.neotica.holomarket.utils.TopBarHelper;
 
@@ -55,6 +60,12 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
     private HorizontalScrollView hsvScreenshots;
     private LinearLayout llScreenshots;
     private Button btDownload;
+    private LinearLayout llDownloadProgress;
+    private TextView tvDownloadProgress;
+    private ProgressBar pbDownloadProgress;
+    private Button btnDownloadCancel;
+    private final List<Button> versionDownloadButtons = new ArrayList<Button>();
+    private boolean downloadInProgress = false;
     private RatingBar rbRating;
     private TextView tvRatingInfo;
     private Button btnDeleteReview;
@@ -65,6 +76,19 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
     private String currentPackageName;
 
     private static final String INTENT_PACKAGE_NAME = "PACKAGE_NAME";
+
+    private final BroadcastReceiver progressReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (appDetailPresenter == null || currentPackageName == null) {
+                return;
+            }
+            String pkg = intent.getStringExtra(DownloadService.EXTRA_PACKAGE);
+            if (currentPackageName.equals(pkg)) {
+                appDetailPresenter.refreshDownloadState();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +107,10 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
         ivIcon = (ImageView) findViewById(R.id.iv_detail_icon);
         llVersions = (LinearLayout) findViewById(R.id.ll_versions);
         btDownload = (Button) findViewById(R.id.bt_download);
+        llDownloadProgress = (LinearLayout) findViewById(R.id.ll_download_progress);
+        tvDownloadProgress = (TextView) findViewById(R.id.tv_download_progress);
+        pbDownloadProgress = (ProgressBar) findViewById(R.id.pb_download_progress);
+        btnDownloadCancel = (Button) findViewById(R.id.btn_download_cancel);
         tvScreenshotsLabel = (TextView) findViewById(R.id.tv_screenshots_label);
         hsvScreenshots = (HorizontalScrollView) findViewById(R.id.hsv_screenshots);
         llScreenshots = (LinearLayout) findViewById(R.id.ll_screenshots);
@@ -137,6 +165,13 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
             }
         });
 
+        btnDownloadCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                appDetailPresenter.cancelDownload();
+            }
+        });
+
         String packageName = getIntent().getStringExtra(INTENT_PACKAGE_NAME);
 
         if (packageName != null) {
@@ -145,6 +180,24 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
         } else {
             Toast.makeText(this, R.string.detail_no_package, Toast.LENGTH_SHORT).show();
             finish();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(progressReceiver, new IntentFilter(DownloadService.ACTION_PROGRESS));
+        if (appDetailPresenter != null) {
+            appDetailPresenter.refreshDownloadState();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            unregisterReceiver(progressReceiver);
+        } catch (Exception e) {
         }
     }
 
@@ -222,6 +275,38 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
             btDownload.setText(R.string.detail_update);
         } else {
             btDownload.setText(R.string.common_download);
+        }
+    }
+
+    @Override
+    public void showDownloadProgress(int percent, String statusText, boolean indeterminate) {
+        downloadInProgress = true;
+        setVersionButtonsEnabled(false);
+
+        btDownload.setVisibility(View.GONE);
+        llDownloadProgress.setVisibility(View.VISIBLE);
+
+        pbDownloadProgress.setIndeterminate(indeterminate);
+        if (!indeterminate) {
+            pbDownloadProgress.setProgress(Math.max(0, Math.min(100, percent)));
+        }
+        tvDownloadProgress.setText(TextUtils.isEmpty(statusText)
+                ? getString(R.string.downloads_downloading)
+                : statusText);
+        btnDownloadCancel.setVisibility(indeterminate ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void hideDownloadProgress() {
+        downloadInProgress = false;
+        setVersionButtonsEnabled(true);
+
+        llDownloadProgress.setVisibility(View.GONE);
+    }
+
+    private void setVersionButtonsEnabled(boolean enabled) {
+        for (int i = 0; i < versionDownloadButtons.size(); i++) {
+            versionDownloadButtons.get(i).setEnabled(enabled);
         }
     }
 
@@ -333,6 +418,7 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
 
     private void renderVersions(List<VersionModel> versions) {
         llVersions.removeAllViews();
+        versionDownloadButtons.clear();
 
         LayoutInflater inflater = LayoutInflater.from(this);
         for (int i = 0; i < versions.size(); i++) {
@@ -346,6 +432,8 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
             TextView tvMinSdk = (TextView) row.findViewById(R.id.tv_min_sdk);
             TextView tvChangelog = (TextView) row.findViewById(R.id.tv_changelog);
             Button btnVersionDownload = (Button) row.findViewById(R.id.btn_version_download);
+            btnVersionDownload.setEnabled(!downloadInProgress);
+            versionDownloadButtons.add(btnVersionDownload);
 
             tvVersionName.setText(getString(R.string.detail_version, vm.versionName, vm.versionCode));
             tvMinSdk.setText(getString(R.string.detail_min_sdk, vm.minSdk));

@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import id.neotica.holomarket.feature.home.domain.AppTopic;
+import id.neotica.holomarket.feature.home.domain.HomeSection;
 
 /**
  * View contract for the home screen, implemented by the home Activity.
@@ -16,7 +16,7 @@ public interface HomeView {
 
     void showSettings();
 
-    void renderSections(List<AppTopic> topics);
+    void renderSections(List<HomeSection> sections);
 
     void renderFeatured(List<JSONObject> items);
 

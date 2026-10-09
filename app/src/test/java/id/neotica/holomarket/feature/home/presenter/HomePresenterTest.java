@@ -13,7 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 
 import id.neotica.holomarket.feature.home.contract.HomeView;
-import id.neotica.holomarket.feature.home.domain.AppTopic;
+import id.neotica.holomarket.feature.home.domain.HomeSection;
 import id.neotica.holomarket.network.ApiCallback;
 
 import static org.junit.Assert.assertEquals;
@@ -96,8 +96,11 @@ public class HomePresenterTest {
 
         ArgumentCaptor<List> captor = ArgumentCaptor.forClass(List.class);
         verify(mockView).renderSections(captor.capture());
-        List topics = captor.getValue();
-        assertEquals(2, topics.size());
+        List<HomeSection> sections = captor.getValue();
+        assertEquals(3, sections.size());
+        assertEquals("Applications", sections.get(0).title);
+        assertEquals("Games", sections.get(1).title);
+        assertEquals(HomeSection.Type.MY_APPS, sections.get(2).type);
 
         assertEquals(1, presenter.featuredCalls);
         assertEquals(0, presenter.organizerCalls);
@@ -123,9 +126,10 @@ public class HomePresenterTest {
 
         ArgumentCaptor<List> captor = ArgumentCaptor.forClass(List.class);
         verify(mockView).renderSections(captor.capture());
-        List<AppTopic> topics = captor.getValue();
-        assertEquals(3, topics.size());
-        assertEquals("Adult", topics.get(2).displayName);
+        List<HomeSection> sections = captor.getValue();
+        assertEquals(4, sections.size());
+        assertEquals("Adult", sections.get(2).title);
+        assertEquals(HomeSection.Type.MY_APPS, sections.get(3).type);
     }
 
     @Test

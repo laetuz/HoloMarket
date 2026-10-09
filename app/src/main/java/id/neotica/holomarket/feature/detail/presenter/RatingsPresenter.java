@@ -139,7 +139,7 @@ public class RatingsPresenter {
                     myRating = 0;
                     String me = currentUsername();
 
-                    JSONArray reviewsArray = root.optJSONArray("reviews");
+                    JSONArray reviewsArray = extractReviews(root);
                     if (reviewsArray != null && me != null) {
                         for (int i = 0; i < reviewsArray.length(); i++) {
                             ReviewModel review = ReviewModel.fromJson(reviewsArray.optJSONObject(i));
@@ -160,6 +160,18 @@ public class RatingsPresenter {
                 render();
             }
         });
+    }
+
+    /**
+     * Reviews are paginated ({@code reviews: {data: [...]}}); tolerate the legacy
+     * flat-array shape.
+     */
+    private JSONArray extractReviews(JSONObject root) {
+        JSONObject paginated = root.optJSONObject("reviews");
+        if (paginated != null) {
+            return paginated.optJSONArray("data");
+        }
+        return root.optJSONArray("reviews");
     }
 
     private void render() {

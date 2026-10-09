@@ -10,6 +10,8 @@ public interface SettingsView {
 
     void renderAdultContent(boolean enabled);
 
+    void renderRootAutoInstall(boolean enabled);
+
     void renderVersion(String versionName, int versionCode);
 
     void showUpToDate();

@@ -24,8 +24,9 @@ import java.util.List;
 
 import id.neotica.holomarket.R;
 import id.neotica.holomarket.feature.auth.login.ui.LoginActivity;
+import id.neotica.holomarket.feature.downloads.ui.DownloadsActivity;
 import id.neotica.holomarket.feature.home.contract.HomeView;
-import id.neotica.holomarket.feature.home.domain.AppTopic;
+import id.neotica.holomarket.feature.home.domain.HomeSection;
 import id.neotica.holomarket.feature.home.presenter.HomePresenter;
 import id.neotica.holomarket.ui.components.InfiniteAppsAdapter;
 import id.neotica.holomarket.ui.components.SectionListBuilder;
@@ -95,19 +96,23 @@ public class MainActivity extends Activity implements HomeView {
     }
 
     @Override
-    public void renderSections(List<AppTopic> topics) {
-        SectionListBuilder.build(this, sectionContainer, topics,
-                new SectionListBuilder.ItemBinder<AppTopic>() {
+    public void renderSections(List<HomeSection> sections) {
+        SectionListBuilder.build(this, sectionContainer, sections,
+                new SectionListBuilder.ItemBinder<HomeSection>() {
                     @Override
-                    public void onBind(AppTopic topic, View view) {
-                        ((TextView) view.findViewById(R.id.tv_title)).setText(topic.displayName);
+                    public void onBind(HomeSection section, View view) {
+                        ((TextView) view.findViewById(R.id.tv_title)).setText(section.title);
                     }
 
                     @Override
-                    public void onClick(AppTopic topic) {
+                    public void onClick(HomeSection section) {
+                        if (section.type == HomeSection.Type.MY_APPS) {
+                            startActivity(new Intent(MainActivity.this, DownloadsActivity.class));
+                            return;
+                        }
                         Intent intent = new Intent(MainActivity.this, CategoriesActivity.class);
-                        intent.putExtra(INTENT_TOPIC, topic.value);
-                        intent.putExtra(INTENT_TOPIC + "_DISPLAY", topic.displayName);
+                        intent.putExtra(INTENT_TOPIC, section.value);
+                        intent.putExtra(INTENT_TOPIC + "_DISPLAY", section.title);
                         startActivity(intent);
                     }
                 });

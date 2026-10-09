@@ -26,6 +26,7 @@ public class SettingsActivity extends Activity implements SettingsView {
     private TextView tvUsername;
     private TextView tvVersion;
     private CheckBox cbAdultContent;
+    private CheckBox cbRootAutoInstall;
     private boolean ignoreCheckedChange;
 
     private SettingsPresenter presenter;
@@ -45,6 +46,7 @@ public class SettingsActivity extends Activity implements SettingsView {
         tvUsername = (TextView) findViewById(R.id.tv_settings_username);
         tvVersion = (TextView) findViewById(R.id.tv_version);
         cbAdultContent = (CheckBox) findViewById(R.id.cb_adult_content);
+        cbRootAutoInstall = (CheckBox) findViewById(R.id.cb_root_auto_install);
         Button btnLogout = (Button) findViewById(R.id.btn_logout);
 
         cbAdultContent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -92,13 +94,20 @@ public class SettingsActivity extends Activity implements SettingsView {
             }
         });
 
+        cbRootAutoInstall.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (ignoreCheckedChange) return;
+                presenter.setRootAutoInstall(isChecked);
+            }
+        });
+
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.logout();
             }
         });
-
         TextView tvChangelog = (TextView) findViewById(R.id.tv_changelog);
         tvChangelog.setText(R.string.settings_changelog_text);
 
@@ -119,6 +128,13 @@ public class SettingsActivity extends Activity implements SettingsView {
     private void setAdultChecked(boolean checked) {
         ignoreCheckedChange = true;
         cbAdultContent.setChecked(checked);
+        ignoreCheckedChange = false;
+    }
+
+    @Override
+    public void renderRootAutoInstall(boolean enabled) {
+        ignoreCheckedChange = true;
+        cbRootAutoInstall.setChecked(enabled);
         ignoreCheckedChange = false;
     }
 

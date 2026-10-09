@@ -9,7 +9,8 @@ import id.neotica.holomarket.feature.settings.contract.SettingsView;
 import id.neotica.holomarket.model.VersionModel;
 import id.neotica.holomarket.network.ApiCallback;
 import id.neotica.holomarket.network.ApiTask;
-import id.neotica.holomarket.network.DownloadTask;
+import id.neotica.holomarket.feature.downloads.DownloadStarter;
+import id.neotica.holomarket.utils.AppPrefs;
 import id.neotica.holomarket.utils.AuthManager;
 
 /**
@@ -46,6 +47,7 @@ public class SettingsPresenter {
         if (view != null) {
             view.renderProfile(username != null ? username : "User");
             view.renderAdultContent(authManager.isAdultContentEnabled());
+            view.renderRootAutoInstall(AppPrefs.isRootAutoInstallEnabled(context));
             view.renderVersion(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
         }
     }
@@ -59,6 +61,10 @@ public class SettingsPresenter {
 
     public void setAdultContent(boolean enabled) {
         authManager.saveAdultContentEnabled(enabled);
+    }
+
+    public void setRootAutoInstall(boolean enabled) {
+        AppPrefs.setRootAutoInstallEnabled(context, enabled);
     }
 
     public boolean verifyAdultPassword(String password) {
@@ -104,7 +110,7 @@ public class SettingsPresenter {
             }
             return;
         }
-        startDownload(latestFileName, latestDownloadUrl);
+        startDownload(SELF_PACKAGE, latestFileName, "HoloMarket", "", latestDownloadUrl);
     }
 
     // --- I/O seams: overridden in tests to run synchronously ---
@@ -114,7 +120,7 @@ public class SettingsPresenter {
                 null, "Checking for updates...", callback).execute();
     }
 
-    void startDownload(String fileName, String downloadUrl) {
-        new DownloadTask(context, fileName).execute(downloadUrl);
+    void startDownload(String pkg, String fileName, String appTitle, String icon, String downloadUrl) {
+        DownloadStarter.start(context, pkg, fileName, appTitle, icon, downloadUrl);
     }
 }

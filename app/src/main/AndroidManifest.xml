@@ -23,6 +23,10 @@
         <activity android:name=".feature.settings.ui.SettingsActivity" />
         <activity android:name=".feature.category.ui.CategoriesActivity" />
         <activity android:name=".feature.detail.ui.AppDetailActivity" />
+        <activity android:name=".feature.downloads.ui.DownloadsActivity" />
+        <service
+            android:name=".feature.downloads.service.DownloadService"
+            android:exported="false" />
         <activity
             android:name="id.neotica.holomarket.feature.applist.ui.AppListActivity"
             android:windowSoftInputMode="stateHidden" />

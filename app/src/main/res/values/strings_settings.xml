@@ -2,6 +2,7 @@
 <resources>
     <string name="settings_title">Settings</string>
     <string name="settings_adult_toggle">Show 18+ content</string>
+    <string name="settings_root_auto_install">Root auto-install</string>
     <string name="settings_adult_title">18+ Content</string>
     <string name="settings_adult_prompt">Enter password to enable 18+ content:</string>
     <string name="settings_wrong_password">Wrong password</string>

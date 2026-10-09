@@ -52,7 +52,7 @@ public class SettingsPresenterTest {
         }
 
         @Override
-        void startDownload(String fileName, String downloadUrl) {
+        void startDownload(String pkg, String fileName, String appTitle, String icon, String downloadUrl) {
             downloadCalls++;
             lastDownloadFile = fileName;
             lastDownloadUrl = downloadUrl;

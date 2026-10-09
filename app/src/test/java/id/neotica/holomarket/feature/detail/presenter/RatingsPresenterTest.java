@@ -116,9 +116,9 @@ public class RatingsPresenterTest {
         assertEquals(1, presenter.reviewsCalls);
 
         presenter.reviewsCallback.onSuccess(
-                "{\"average_rating\":4.2,\"total_reviews\":4,\"reviews\":["
-                        + "{\"username\":\"jane\",\"rating\":2},"
-                        + "{\"username\":\"john\",\"rating\":5}]}");
+                "{\"average_rating\":4.2,\"total_reviews\":4,\"reviews\":{"
+                        + "\"data\":[{\"username\":\"jane\",\"rating\":2},{\"username\":\"john\",\"rating\":5}],"
+                        + "\"page\":1,\"limit\":10,\"total_items\":2,\"total_pages\":1}}");
 
         verify(mockView).renderRating(true, 5, 4.2, 4);
     }
@@ -130,9 +130,23 @@ public class RatingsPresenterTest {
         presenter.load("pkg", 4.0, 3);
         reset(mockView);
         presenter.reviewsCallback.onSuccess(
-                "{\"average_rating\":4.0,\"total_reviews\":3,\"reviews\":[{\"username\":\"jane\",\"rating\":2}]}");
+                "{\"average_rating\":4.0,\"total_reviews\":3,\"reviews\":{"
+                        + "\"data\":[{\"username\":\"jane\",\"rating\":2}],"
+                        + "\"page\":1,\"limit\":10,\"total_items\":1,\"total_pages\":1}}");
 
         verify(mockView).renderRating(true, 0, 4.0, 3);
+    }
+
+    @Test
+    public void load_loggedIn_legacyFlatReviews_stillMatches() {
+        loggedInAs("john");
+
+        presenter.load("pkg", 4.0, 3);
+        reset(mockView);
+        presenter.reviewsCallback.onSuccess(
+                "{\"average_rating\":4.0,\"total_reviews\":3,\"reviews\":[{\"username\":\"john\",\"rating\":3}]}");
+
+        verify(mockView).renderRating(true, 3, 4.0, 3);
     }
 
     // --- submit ---
@@ -153,7 +167,9 @@ public class RatingsPresenterTest {
         verify(mockView).showRatingSaved();
 
         presenter.reviewsCallback.onSuccess(
-                "{\"average_rating\":4.0,\"total_reviews\":1,\"reviews\":[{\"username\":\"john\",\"rating\":4}]}");
+                "{\"average_rating\":4.0,\"total_reviews\":1,\"reviews\":{"
+                        + "\"data\":[{\"username\":\"john\",\"rating\":4}],"
+                        + "\"page\":1,\"limit\":10,\"total_items\":1,\"total_pages\":1}}");
         verify(mockView).renderRating(true, 4, 4.0, 1);
     }
 
@@ -207,7 +223,8 @@ public class RatingsPresenterTest {
     public void deleteReview_success_clearsAndRefreshes() {
         loggedInAs("john");
         presenter.load("pkg", 0, 0);
-        presenter.reviewsCallback.onSuccess("{\"reviews\":[{\"username\":\"john\",\"rating\":5}]}");
+        presenter.reviewsCallback.onSuccess(
+                "{\"reviews\":{\"data\":[{\"username\":\"john\",\"rating\":5}]}}");
         verify(mockView).renderRating(true, 5, 0, 0);
 
         presenter.deleteReview();
@@ -219,7 +236,7 @@ public class RatingsPresenterTest {
         verify(mockView).showReviewDeleted();
 
         reset(mockView);
-        presenter.reviewsCallback.onSuccess("{\"reviews\":[]}");
+        presenter.reviewsCallback.onSuccess("{\"reviews\":{\"data\":[]}}");
         verify(mockView).renderRating(true, 0, 0, 0);
     }
 
