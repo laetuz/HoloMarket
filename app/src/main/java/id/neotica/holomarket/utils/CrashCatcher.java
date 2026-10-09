@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import id.neotica.holomarket.BuildConfig;
+import id.neotica.holomarket.R;
 
 /**
  * Created by ryomartin on 21/03/26.
@@ -57,9 +58,9 @@ public class CrashCatcher {
 
         if (lastCrash != null && isFromCurrentBuild(activity)) {
             new AlertDialog.Builder(activity)
-                    .setTitle("Crash Detected!")
+                    .setTitle(R.string.crash_detected_title)
                     .setMessage(lastCrash)
-                    .setPositiveButton("Clear & Close", null)
+                    .setPositiveButton(R.string.crash_clear_close, null)
                     .show();
 
             // Clear the log so it only shows once

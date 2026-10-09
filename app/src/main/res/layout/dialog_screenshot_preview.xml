@@ -21,7 +21,7 @@
         android:layout_marginRight="8dp"
         android:padding="8dp"
         android:src="@drawable/ic_close"
-        android:contentDescription="Close"
+        android:contentDescription="@string/common_close"
         android:focusable="true"
         android:background="@drawable/bg_focusable"
         android:nextFocusDown="@id/gallery_preview" />

@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Search apps..."
+            android:hint="@string/applist_search_hint"
             android:singleLine="true"
             android:imeOptions="actionSearch"
             android:nextFocusUp="@id/top_bar_back"
@@ -32,7 +32,7 @@
             android:id="@+id/btn_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search"
+            android:text="@string/applist_search"
             android:nextFocusUp="@id/top_bar_back"
             android:nextFocusLeft="@id/et_search" />
     </LinearLayout>

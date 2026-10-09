@@ -4,4 +4,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scaleType="fitCenter"
-    android:contentDescription="Screenshot preview" />
+    android:contentDescription="@string/detail_screenshot_preview" />

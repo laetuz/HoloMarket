@@ -38,6 +38,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Download" />
+        android:text="@string/common_download" />
 
 </LinearLayout>

@@ -18,7 +18,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Account"
+        android:text="@string/auth_register_title"
         android:textSize="28sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -28,7 +28,7 @@
         android:id="@+id/et_register_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username"
+        android:hint="@string/common_username"
         android:singleLine="true"
         android:layout_marginBottom="16dp" />
 
@@ -36,7 +36,7 @@
         android:id="@+id/et_register_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="@string/common_email"
         android:singleLine="true"
         android:inputType="textEmailAddress"
         android:layout_marginBottom="16dp" />
@@ -45,7 +45,7 @@
         android:id="@+id/et_register_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="@string/common_password"
         android:singleLine="true"
         android:inputType="textPassword"
         android:drawableRight="@drawable/ic_eye_closed"
@@ -56,7 +56,7 @@
         android:id="@+id/btn_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register" />
+        android:text="@string/common_register" />
 
     </LinearLayout>
 </LinearLayout>

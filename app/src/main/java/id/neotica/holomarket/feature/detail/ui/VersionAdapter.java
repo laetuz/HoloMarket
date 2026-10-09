@@ -45,9 +45,9 @@ public class VersionAdapter extends ArrayAdapter<VersionModel> {
         }
 
         if (version != null) {
-            viewHolder.tvVersionName.setText("Version " + version.versionName + " (" + version.versionCode + ")");
+            viewHolder.tvVersionName.setText(getContext().getString(R.string.detail_version, version.versionName, version.versionCode));
 
-            viewHolder.tvMinSdk.setText("Min SDK: " + version.minSdk);
+            viewHolder.tvMinSdk.setText(getContext().getString(R.string.detail_min_sdk, version.minSdk));
 
             if (version.changelog != null && version.changelog.length() > 0) {
                 viewHolder.tvChangelog.setText(version.changelog);

@@ -44,6 +44,9 @@ public class ApiTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        if (loadingMessage == null) {
+            return;
+        }
         try {
             dialog = ProgressDialog.show(context, "", loadingMessage, true);
         } catch (Throwable t) {

@@ -8,14 +8,14 @@
 - Role: The native portal to browse and install ecosystem APKs.
 
 ## 2. Technology Stack & Constraints
-- Minimum API: `minSdkVersion 3` (Android 1.6)
+- Minimum API: `minSdkVersion 3` (Android 1.5 / Cupcake)
 - Target API: `targetSdkVersion 21` (Lollipop)
 - Language: Java 7
 - Network: `HttpURLConnection`, `AsyncTask`, `org.json` (Strictly NO Retrofit/OkHttp)
 - UI: Native `ListView` with ViewHolder pattern (Strictly NO RecyclerView/AppCompat-v7)
 
 ## 3. Strict Legacy Development Rules (The "Gotchas")
-To prevent instant force-closes on API 7, all code must adhere to these historical constraints:
+To prevent instant force-closes on API 3, all code must adhere to these historical constraints:
 1. String Checking: Never use `String.isEmpty()`. Always use `TextUtils.isEmpty(string)` or `string.length() > 0`.
 2. ListView Footers: `listView.addFooterView()` MUST be called strictly *before* `listView.setAdapter()`.
 3. Memory Management: `ListView` adapters must implement the `convertView.setTag(viewHolder)` recycling pattern to prevent OutOfMemory crashes on 512MB RAM devices.

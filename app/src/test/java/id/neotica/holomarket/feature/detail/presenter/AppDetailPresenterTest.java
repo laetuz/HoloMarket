@@ -14,12 +14,15 @@ import id.neotica.holomarket.BuildConfig;
 import id.neotica.holomarket.feature.detail.contract.AppDetailView;
 import id.neotica.holomarket.feature.detail.domain.AppDetailModel;
 import id.neotica.holomarket.feature.detail.domain.InstallState;
+import id.neotica.holomarket.feature.downloads.domain.DownloadInfo;
 import id.neotica.holomarket.model.VersionModel;
 import id.neotica.holomarket.network.ApiCallback;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -52,6 +55,9 @@ public class AppDetailPresenterTest {
         String lastDownloadFile;
         String lastDownloadTitle;
         String lastDownloadUrl;
+        DownloadInfo task;
+        int cancelCalls;
+        String lastCancelledPackage;
 
         TestPresenter(Context context) {
             super(context);
@@ -69,11 +75,22 @@ public class AppDetailPresenterTest {
         }
 
         @Override
-        void startDownload(String fileName, String appTitle, String downloadUrl) {
+        void startDownload(String pkg, String fileName, String appTitle, String icon, String downloadUrl) {
             downloadCalls++;
             lastDownloadFile = fileName;
             lastDownloadTitle = appTitle;
             lastDownloadUrl = downloadUrl;
+        }
+
+        @Override
+        DownloadInfo readDownloadTask(String pkg) {
+            return task;
+        }
+
+        @Override
+        void sendCancel(String pkg) {
+            cancelCalls++;
+            lastCancelledPackage = pkg;
         }
     }
 
@@ -206,6 +223,76 @@ public class AppDetailPresenterTest {
 
         assertEquals(1, presenter.downloadCalls);
         assertEquals("update_v7.apk", presenter.lastDownloadFile);
+    }
+
+    @Test
+    public void downloadVersion_showsProgressImmediately() {
+        presenter.downloadVersion(new VersionModel("id", "app", "1.0", 7, "/apps/a.apk", "", 0, 0, 0));
+
+        verify(mockView).showDownloadProgress(0, null, true);
+    }
+
+    // --- inline download progress ---
+
+    @Test
+    public void refreshDownloadState_activeTask_showsProgress() {
+        presenter.installedVersionCode = -1;
+        presenter.load("pkg");
+        presenter.appDetailCallback.onSuccess(DETAIL_JSON);
+        presenter.task = new DownloadInfo("pkg", "My App", "", 42, 1024L, false, "42%  -  1 KB/s", "a.apk", "");
+
+        presenter.refreshDownloadState();
+
+        verify(mockView).showDownloadProgress(42, "42%  -  1 KB/s", false);
+    }
+
+    @Test
+    public void refreshDownloadState_installing_isIndeterminate() {
+        presenter.installedVersionCode = -1;
+        presenter.load("pkg");
+        presenter.appDetailCallback.onSuccess(DETAIL_JSON);
+        presenter.task = new DownloadInfo("pkg", "My App", "", 100, 0L, true, "Installing...", "a.apk", "/sdcard/a.apk");
+
+        presenter.refreshDownloadState();
+
+        verify(mockView).showDownloadProgress(100, "Installing...", true);
+    }
+
+    @Test
+    public void refreshDownloadState_noTask_hidesProgressAndRendersInstallState() {
+        presenter.installedVersionCode = -1;
+        presenter.load("pkg");
+        presenter.appDetailCallback.onSuccess(DETAIL_JSON);
+        reset(mockView);
+
+        presenter.refreshDownloadState();
+
+        verify(mockView).hideDownloadProgress();
+        verify(mockView).renderInstallState(InstallState.DOWNLOAD);
+    }
+
+    @Test
+    public void load_success_withActiveTask_showsProgressInsteadOfInstallState() {
+        presenter.task = new DownloadInfo("pkg", "My App", "", 10, 0L, false, "10%", "a.apk", "");
+        presenter.installedVersionCode = -1;
+
+        presenter.load("pkg");
+        presenter.appDetailCallback.onSuccess(DETAIL_JSON);
+
+        verify(mockView).renderAppDetail(any(AppDetailModel.class));
+        verify(mockView).showDownloadProgress(10, "10%", false);
+        verify(mockView, never()).renderInstallState(any(InstallState.class));
+    }
+
+    @Test
+    public void cancelDownload_sendsCancelForPackage() {
+        presenter.load("pkg");
+        presenter.appDetailCallback.onSuccess(DETAIL_JSON);
+
+        presenter.cancelDownload();
+
+        assertEquals(1, presenter.cancelCalls);
+        assertEquals("pkg", presenter.lastCancelledPackage);
     }
 
     // --- lifecycle ---

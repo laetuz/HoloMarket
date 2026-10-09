@@ -35,7 +35,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Show 18+ content"
+                android:text="@string/settings_adult_toggle"
                 android:textSize="16sp" />
 
             <CheckBox
@@ -45,11 +45,34 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/settings_root_auto_install"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/cb_root_auto_install"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/btn_check_update"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Check for updates"
+            android:text="@string/settings_check_update"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp" />
@@ -58,7 +81,7 @@
             android:id="@+id/btn_logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Logout"
+            android:text="@string/settings_logout"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp" />
 
@@ -80,7 +103,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Changelog"
+            android:text="@string/settings_changelog"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
@@ -107,7 +130,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Credits"
+            android:text="@string/settings_credits"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginLeft="16dp"

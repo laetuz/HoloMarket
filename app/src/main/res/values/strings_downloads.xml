@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloads_title">My Apps</string>
+    <string name="downloads_downloading">Downloading...</string>
+    <string name="downloads_complete">Download complete</string>
+    <string name="downloads_installing">Installing...</string>
+    <string name="downloads_installed">App installed</string>
+    <string name="downloads_installed_named">%1$s installed</string>
+    <string name="downloads_cancel">Cancel</string>
+    <string name="downloads_empty">No downloads or installed apps.</string>
+    <string name="downloads_section_active">Active downloads</string>
+    <string name="downloads_section_updates">Available updates</string>
+    <string name="downloads_section_installed">Installed apps</string>
+    <string name="downloads_status_update_available">Update available</string>
+    <string name="downloads_status_installed">Installed</string>
+</resources>

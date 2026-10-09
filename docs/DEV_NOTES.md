@@ -2,21 +2,10 @@
 
 Open items, known limitations, and environment quirks. Not a spec — living notes for the dev machine.
 
-## MVP migration (`feature/<name>/{contract,domain,presenter,ui}`)
-
-Convention + rules: see `ARCHITECTURE.md`. Tick each feature once migrated.
-
-- [x] detail
-- [x] auth (login, register, forgotpassword)
-- [ ] applist
-- [ ] category
-- [ ] settings
-- [ ] home (MainActivity)
-
-> Remove this section once every feature is migrated.
-
-### For me to check
-- **Shared components** — `InfiniteAppsAdapter` / `SectionListBuilder` are still in `ui/components/`; decide whether to relocate them to a shared `common/` package (after `home` + `category` migrate).
+## For me to check
+- **Localization** — layouts/activities/utils use `res/values/strings_<feature>.xml` (+ `strings_common.xml`); **presenter messages are still English literals** (not localized). Proper fix later: presenters emit error keys/codes and the view localizes them.
+- **Shared components** — `InfiniteAppsAdapter` / `SectionListBuilder` now live alone under `ui/components/`; decide whether to relocate them to a shared `common/` package.
+- **Home feed payload** — `HomePresenter` passes raw `List<JSONObject>` into `InfiniteAppsAdapter`; consider a typed `AppFeedItem` model (parse in the presenter, adapter consumes models) later.
 - **Known fixes to evaluate later** (kept as-is for now) — public `GET /collections/organizer`, server-driven `GET /categories` (see TODO below).
 
 ## Trackball / D-pad navigation gaps
@@ -44,8 +33,8 @@ The hardware-input pass (v1.4.3) made section rows, screenshots, "Read more", th
 
 ## API-level caveats
 
-- Manifest `minSdkVersion` is **3** (Android 1.5+), but `android.util.Base64` is **API 8**. `AuthManager.getUsernameFromToken()` guards it with `try/catch`, so it degrades rather than crashing on API 3–7 — but don't add new API-8+ calls without a similar guard.
-- The real crash-history culprit was `ImageButton.setColorFilter(int)` (API 16). New icon tinting must use `Drawable.setColorFilter(int, PorterDuff.Mode)` (API 1).
+- **`android.util.Base64` (API 8)** — still referenced in `AuthManager.getUsernameFromToken()` (`AuthManager.java:106`). It's guarded by `catch (Throwable)`, so on API 3–7 it returns `null` instead of crashing (Settings falls back to "User"; ratings simply don't match an own review). It's only reached when no username is stored; on API 8+ it works normally. Keep guarding any new API-8+ calls the same way.
+- **`ImageButton.setColorFilter(int)` (API 16) — resolved.** The only tinting left is API-1 `Drawable.setColorFilter(int, PorterDuff.Mode)` in `TopBarHelper.tintDrawable`; no `ImageButton.setColorFilter` remains. Keep it that way (regression guard).
 
 ## App detail (MVP)
 

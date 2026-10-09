@@ -17,7 +17,7 @@ import id.neotica.holomarket.feature.auth.forgotpassword.ui.ForgotPasswordActivi
 import id.neotica.holomarket.feature.auth.login.contract.LoginView;
 import id.neotica.holomarket.feature.auth.login.presenter.LoginPresenter;
 import id.neotica.holomarket.feature.auth.register.ui.RegisterActivity;
-import id.neotica.holomarket.ui.feature.home.MainActivity;
+import id.neotica.holomarket.feature.home.ui.MainActivity;
 import id.neotica.holomarket.utils.CrashCatcher;
 import id.neotica.holomarket.utils.TopBarHelper;
 
@@ -33,7 +33,7 @@ public class LoginActivity extends Activity implements LoginView {
         setContentView(R.layout.activity_login);
         CrashCatcher.showCrashLogIfAny(this);
 
-        TopBarHelper.setup(this, "Sign In", false);
+        TopBarHelper.setup(this, getString(R.string.auth_login_title), false);
 
         presenter = new LoginPresenter(this);
         presenter.attach(this);
@@ -79,12 +79,12 @@ public class LoginActivity extends Activity implements LoginView {
 
     @Override
     public void showUsernameError() {
-        etUsername.setError("Enter username");
+        etUsername.setError(getString(R.string.common_error_enter_username));
     }
 
     @Override
     public void showPasswordError() {
-        etPassword.setError("Enter password");
+        etPassword.setError(getString(R.string.common_error_enter_password));
     }
 
     @Override

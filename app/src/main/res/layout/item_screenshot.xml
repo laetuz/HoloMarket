@@ -7,4 +7,4 @@
     android:scaleType="centerCrop"
     android:focusable="true"
     android:background="@drawable/bg_focusable"
-    android:contentDescription="App screenshot" />
+    android:contentDescription="@string/common_app_screenshot" />

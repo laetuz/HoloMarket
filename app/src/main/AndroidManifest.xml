@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.feature.home.MainActivity">
+        <activity android:name=".feature.home.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -20,11 +20,15 @@
         <activity android:name=".feature.auth.login.ui.LoginActivity" />
         <activity android:name=".feature.auth.forgotpassword.ui.ForgotPasswordActivity" />
         <activity android:name=".feature.auth.register.ui.RegisterActivity" />
-        <activity android:name=".ui.feature.settings.SettingsActivity" />
-        <activity android:name=".ui.feature.category.CategoriesActivity" />
+        <activity android:name=".feature.settings.ui.SettingsActivity" />
+        <activity android:name=".feature.category.ui.CategoriesActivity" />
         <activity android:name=".feature.detail.ui.AppDetailActivity" />
+        <activity android:name=".feature.downloads.ui.DownloadsActivity" />
+        <service
+            android:name=".feature.downloads.service.DownloadService"
+            android:exported="false" />
         <activity
-            android:name="id.neotica.holomarket.ui.feature.applist.AppListActivity"
+            android:name="id.neotica.holomarket.feature.applist.ui.AppListActivity"
             android:windowSoftInputMode="stateHidden" />
     </application>
 

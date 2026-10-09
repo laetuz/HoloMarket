@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/top_bar" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ListView
+            android:id="@+id/lv_downloads"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/grey100"
+            android:dividerHeight="1dp" />
+
+        <TextView
+            android:id="@+id/tv_downloads_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/downloads_empty"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+</LinearLayout>

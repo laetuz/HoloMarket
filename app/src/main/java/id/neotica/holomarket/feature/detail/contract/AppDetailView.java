@@ -22,4 +22,8 @@ public interface AppDetailView {
     void showNoVersions();
 
     void showNoDownloadLink();
+
+    void showDownloadProgress(int percent, String statusText, boolean indeterminate);
+
+    void hideDownloadProgress();
 }

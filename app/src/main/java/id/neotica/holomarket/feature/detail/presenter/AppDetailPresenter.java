@@ -1,7 +1,9 @@
 package id.neotica.holomarket.feature.detail.presenter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import id.neotica.holomarket.BuildConfig;
@@ -10,7 +12,9 @@ import id.neotica.holomarket.model.VersionModel;
 import id.neotica.holomarket.network.AnalyticsTracker;
 import id.neotica.holomarket.network.ApiCallback;
 import id.neotica.holomarket.network.ApiTask;
-import id.neotica.holomarket.network.DownloadTask;
+import id.neotica.holomarket.feature.downloads.DownloadStarter;
+import id.neotica.holomarket.feature.downloads.domain.DownloadInfo;
+import id.neotica.holomarket.feature.downloads.service.DownloadService;
 import id.neotica.holomarket.feature.detail.contract.AppDetailView;
 import id.neotica.holomarket.feature.detail.domain.InstallState;
 
@@ -62,7 +66,7 @@ public class AppDetailPresenter {
                 installState = computeInstallState(detail);
                 if (view != null) {
                     view.renderAppDetail(detail);
-                    view.renderInstallState(installState);
+                    refreshDownloadState();
                 }
             }
 
@@ -124,7 +128,43 @@ public class AppDetailPresenter {
         AnalyticsTracker.track(context, "download", "app_downloaded");
 
         String appTitle = (detail != null && detail.title != null) ? detail.title : "App";
-        startDownload(fileName, appTitle, downloadUrl);
+        String icon = (detail != null && detail.iconUrl != null) ? detail.iconUrl : "";
+        startDownload(packageName, fileName, appTitle, icon, downloadUrl);
+
+        if (view != null) {
+            view.showDownloadProgress(0, null, true);
+        }
+    }
+
+    /**
+     * Reconciles the download UI with the persisted task state for this package.
+     * Called on resume and on every {@link DownloadService} progress broadcast.
+     */
+    public void refreshDownloadState() {
+        if (packageName == null || packageName.length() == 0 || view == null) {
+            return;
+        }
+
+        DownloadInfo task = readDownloadTask(packageName);
+        if (task != null) {
+            view.showDownloadProgress(task.percent, task.statusText, task.installing);
+            return;
+        }
+
+        view.hideDownloadProgress();
+        if (detail != null) {
+            installState = computeInstallState(detail);
+            view.renderInstallState(installState);
+        }
+    }
+
+    /**
+     * Cancel button next to the inline download progress.
+     */
+    public void cancelDownload() {
+        if (packageName != null && packageName.length() > 0) {
+            sendCancel(packageName);
+        }
     }
 
     private VersionModel latestVersion() {
@@ -177,7 +217,28 @@ public class AppDetailPresenter {
         }
     }
 
-    void startDownload(String fileName, String appTitle, String downloadUrl) {
-        new DownloadTask(context, fileName, appTitle).execute(downloadUrl);
+    void startDownload(String pkg, String fileName, String appTitle, String icon, String downloadUrl) {
+        DownloadStarter.start(context, pkg, fileName, appTitle, icon, downloadUrl);
+    }
+
+    DownloadInfo readDownloadTask(String pkg) {
+        try {
+            SharedPreferences prefs = context.getSharedPreferences(DownloadService.PREFS_NAME, Context.MODE_PRIVATE);
+            String json = prefs.getString(DownloadService.KEY_TASKS, "[]");
+            JSONArray arr = new JSONArray(json);
+            for (int i = 0; i < arr.length(); i++) {
+                DownloadInfo info = DownloadInfo.fromJson(arr.optJSONObject(i));
+                if (info != null && pkg.equals(info.packageName)) {
+                    return info;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    void sendCancel(String pkg) {
+        DownloadStarter.cancel(context, pkg);
     }
 }

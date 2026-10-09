@@ -28,7 +28,7 @@ public class RegisterActivity extends Activity implements RegisterView {
         setContentView(R.layout.activity_register);
         CrashCatcher.showCrashLogIfAny(this);
 
-        TopBarHelper.setup(this, "Create Account", true);
+        TopBarHelper.setup(this, getString(R.string.auth_register_title), true);
 
         presenter = new RegisterPresenter(this);
         presenter.attach(this);
@@ -62,17 +62,17 @@ public class RegisterActivity extends Activity implements RegisterView {
 
     @Override
     public void showUsernameError() {
-        etUsername.setError("Enter username");
+        etUsername.setError(getString(R.string.common_error_enter_username));
     }
 
     @Override
     public void showEmailError() {
-        etEmail.setError("Enter email");
+        etEmail.setError(getString(R.string.common_error_enter_email));
     }
 
     @Override
     public void showPasswordError() {
-        etPassword.setError("Enter password");
+        etPassword.setError(getString(R.string.common_error_enter_password));
     }
 
     @Override
