@@ -32,7 +32,7 @@ Built to solve the TLS/SSL certificate deprecation wall that breaks standard web
 - **Search** apps by keyword, or tap a developer to list their apps
 - **App detail** page with screenshots, version history, developer, and install state (Download / Update / Open)
 - **Ratings & reviews** — rate an app; update or delete your own review (login required)
-- **APK download** via `DownloadTask` with progress bar and auto-install via the system package installer
+- **APK download** via the downloads manager (`DownloadService`) with progress notifications, cancel, and auto-install
 - **Authentication** (login / register / forgot password) with JWT stored in `SharedPreferences`
 - **Settings** screen with self-update check, logout, and 18+ content toggle
 - **Trackball / D-pad navigation** — focusable rows with an orange selection highlight
@@ -63,6 +63,29 @@ NEOMETRICS_BASE_URL
 ```sh
 ./gradlew assembleDebug
 ```
+
+## CI / Releasing
+
+- **CI** (`.github/workflows/ci.yml`) — builds a debug APK and runs the unit tests on pushes and pull requests to `main`/`master`. The APK is uploaded as a workflow artifact.
+- **Release** (`.github/workflows/release.yml`) — runs on `v*` tags and via manual dispatch. It builds a release APK, verifies the signature, uploads an artifact, and attaches `HoloMarket-<tag>.apk` to the GitHub Release. Tags of the form `v<versionName>.<suffix>` (e.g. `v1.5.0.1`) are accepted as test builds and published as **prereleases**.
+
+Both workflows inject `local.properties` from repository secrets (Settings → Secrets and variables → Actions), using bare URLs without quotes:
+
+```
+BASE_URL
+FILE_BASE_URL
+AUTH_BASE_URL
+NEOMETRICS_BASE_URL
+```
+
+Release flow:
+
+1. Bump `versionCode` / `versionName` in `app/build.gradle` for a real release.
+2. Commit and push to `main`.
+3. `git tag vX.Y.Z && git push origin vX.Y.Z`.
+4. The workflow builds `HoloMarket-vX.Y.Z.apk` and attaches it to the GitHub Release.
+
+> Release APKs are debug-signed for now. A different signing key means installing over an existing build requires uninstalling first; real signing will be added later.
 
 ## License
 
