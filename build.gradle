@@ -2,6 +2,7 @@ buildscript {
     repositories {
         mavenCentral()
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://repo.huaweicloud.com/repository/maven' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.2'
@@ -12,6 +13,7 @@ allprojects {
     repositories {
         mavenCentral()
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://repo.huaweicloud.com/repository/maven' }
         maven { url 'https://maven.google.com' }
     }
 }

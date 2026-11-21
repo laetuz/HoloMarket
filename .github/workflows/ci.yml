@@ -58,7 +58,15 @@ jobs:
       - name: Build debug APK and run unit tests
         env:
           ANDROID_HOME: ${{ runner.temp }}/android-sdk
-        run: ./gradlew test assembleDebug --no-daemon --stacktrace
+        run: |
+          for attempt in 1 2 3; do
+            if ./gradlew test assembleDebug --no-daemon --stacktrace; then
+              exit 0
+            fi
+            echo "Build attempt $attempt failed; retrying in 15s..." >&2
+            sleep 15
+          done
+          exit 1
 
       - name: Find built APK
         id: find-apk
