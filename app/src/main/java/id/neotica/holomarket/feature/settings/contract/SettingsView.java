@@ -14,6 +14,8 @@ public interface SettingsView {
 
     void renderVersion(String versionName, int versionCode);
 
+    void renderCacheSize(String text);
+
     void showUpToDate();
 
     void showUpdateAvailable(String versionName);

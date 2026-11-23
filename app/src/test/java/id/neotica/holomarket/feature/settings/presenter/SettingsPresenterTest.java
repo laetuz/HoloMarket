@@ -40,6 +40,9 @@ public class SettingsPresenterTest {
         int downloadCalls;
         String lastDownloadFile;
         String lastDownloadUrl;
+        int clearCalls;
+        int cacheSizeCalls;
+        String cacheSizeText = "12 MB";
 
         TestPresenter(Context context) {
             super(context);
@@ -56,6 +59,18 @@ public class SettingsPresenterTest {
             downloadCalls++;
             lastDownloadFile = fileName;
             lastDownloadUrl = downloadUrl;
+        }
+
+        @Override
+        void clearCachesAsync(CacheClearCallback callback) {
+            clearCalls++;
+            callback.onCacheCleared();
+        }
+
+        @Override
+        void cacheSizeAsync(CacheSizeCallback callback) {
+            cacheSizeCalls++;
+            callback.onCacheSize(cacheSizeText);
         }
     }
 
@@ -141,6 +156,40 @@ public class SettingsPresenterTest {
     @Test
     public void verifyAdultPassword_rejectsWrongPassword() {
         assertFalse(presenter.verifyAdultPassword("nope"));
+    }
+
+    @Test
+    public void load_rendersCacheSize() {
+        presenter.load();
+
+        verify(mockView).renderCacheSize("12 MB");
+        assertTrue(presenter.cacheSizeCalls >= 1);
+    }
+
+    @Test
+    public void clearCache_invokesClearerAndShowsMessage() {
+        presenter.clearCache();
+
+        assertTrue(presenter.clearCalls == 1);
+        verify(mockView).showMessage("Cache cleared");
+    }
+
+    @Test
+    public void clearCache_refreshesCacheSize() {
+        presenter.clearCache();
+
+        assertTrue(presenter.cacheSizeCalls == 1);
+        verify(mockView).renderCacheSize("12 MB");
+    }
+
+    @Test
+    public void detach_thenClearCache_doesNotTouchView() {
+        presenter.detach();
+        reset(mockView);
+
+        presenter.clearCache();
+
+        verifyNoMoreInteractions(mockView);
     }
 
     @Test

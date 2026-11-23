@@ -34,7 +34,7 @@ Built to solve the TLS/SSL certificate deprecation wall that breaks standard web
 - **Ratings & reviews** — rate an app; update or delete your own review (login required)
 - **APK download** via the downloads manager (`DownloadService`) with progress notifications, cancel, and auto-install
 - **Authentication** (login / register / forgot password) with JWT stored in `SharedPreferences`
-- **Settings** screen with self-update check, logout, and 18+ content toggle
+- **Settings** screen with self-update check, clear cache (app + icon caches), logout, root auto-install, and 18+ content toggle
 - **Trackball / D-pad navigation** — focusable rows with an orange selection highlight
 - **CrashCatcher** — saves the last crash stacktrace and shows it on next launch (current build only)
 

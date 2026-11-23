@@ -1,6 +1,7 @@
 package id.neotica.holomarket.feature.settings.presenter;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
 import org.json.JSONObject;
 
@@ -12,12 +13,21 @@ import id.neotica.holomarket.network.ApiTask;
 import id.neotica.holomarket.feature.downloads.DownloadStarter;
 import id.neotica.holomarket.utils.AppPrefs;
 import id.neotica.holomarket.utils.AuthManager;
+import id.neotica.holomarket.utils.CacheCleaner;
 
 /**
- * MVP presenter owning the settings screen: profile, logout, adult toggle, and self-update check.
- * Rendering is delegated to a {@link SettingsView}.
+ * MVP presenter owning the settings screen: profile, logout, adult toggle, cache clearing,
+ * and self-update check. Rendering is delegated to a {@link SettingsView}.
  */
 public class SettingsPresenter {
+
+    public interface CacheClearCallback {
+        void onCacheCleared();
+    }
+
+    public interface CacheSizeCallback {
+        void onCacheSize(String text);
+    }
 
     private static final String SELF_PACKAGE = "id.neotica.holomarket";
     private static final String ADULT_PASSWORD = "adult";
@@ -50,6 +60,30 @@ public class SettingsPresenter {
             view.renderRootAutoInstall(AppPrefs.isRootAutoInstallEnabled(context));
             view.renderVersion(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
         }
+        refreshCacheSize();
+    }
+
+    public void clearCache() {
+        clearCachesAsync(new CacheClearCallback() {
+            @Override
+            public void onCacheCleared() {
+                if (view != null) {
+                    view.showMessage("Cache cleared");
+                }
+                refreshCacheSize();
+            }
+        });
+    }
+
+    public void refreshCacheSize() {
+        cacheSizeAsync(new CacheSizeCallback() {
+            @Override
+            public void onCacheSize(String text) {
+                if (view != null) {
+                    view.renderCacheSize(text);
+                }
+            }
+        });
     }
 
     public void logout() {
@@ -122,5 +156,54 @@ public class SettingsPresenter {
 
     void startDownload(String pkg, String fileName, String appTitle, String icon, String downloadUrl) {
         DownloadStarter.start(context, pkg, fileName, appTitle, icon, downloadUrl);
+    }
+
+    void clearCachesAsync(CacheClearCallback callback) {
+        new ClearCacheTask(context, callback).execute();
+    }
+
+    void cacheSizeAsync(CacheSizeCallback callback) {
+        new CacheSizeTask(context, callback).execute();
+    }
+
+    private static class ClearCacheTask extends AsyncTask<Void, Void, Void> {
+        private final Context context;
+        private final CacheClearCallback callback;
+
+        ClearCacheTask(Context context, CacheClearCallback callback) {
+            this.context = context;
+            this.callback = callback;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            CacheCleaner.clear(context);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            callback.onCacheCleared();
+        }
+    }
+
+    private static class CacheSizeTask extends AsyncTask<Void, Void, String> {
+        private final Context context;
+        private final CacheSizeCallback callback;
+
+        CacheSizeTask(Context context, CacheSizeCallback callback) {
+            this.context = context;
+            this.callback = callback;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            return CacheCleaner.formatSize(context, CacheCleaner.size(context));
+        }
+
+        @Override
+        protected void onPostExecute(String text) {
+            callback.onCacheSize(text);
+        }
     }
 }

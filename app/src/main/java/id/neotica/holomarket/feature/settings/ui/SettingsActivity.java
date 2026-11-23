@@ -27,6 +27,7 @@ public class SettingsActivity extends Activity implements SettingsView {
     private TextView tvVersion;
     private CheckBox cbAdultContent;
     private CheckBox cbRootAutoInstall;
+    private Button btnClearCache;
     private boolean ignoreCheckedChange;
 
     private SettingsPresenter presenter;
@@ -47,6 +48,7 @@ public class SettingsActivity extends Activity implements SettingsView {
         tvVersion = (TextView) findViewById(R.id.tv_version);
         cbAdultContent = (CheckBox) findViewById(R.id.cb_adult_content);
         cbRootAutoInstall = (CheckBox) findViewById(R.id.cb_root_auto_install);
+        btnClearCache = (Button) findViewById(R.id.btn_clear_cache);
         Button btnLogout = (Button) findViewById(R.id.btn_logout);
 
         cbAdultContent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -122,6 +124,23 @@ public class SettingsActivity extends Activity implements SettingsView {
             }
         });
 
+        btnClearCache.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(SettingsActivity.this)
+                        .setTitle(R.string.settings_clear_cache_title)
+                        .setMessage(R.string.settings_clear_cache_message)
+                        .setPositiveButton(R.string.settings_clear_cache_confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                presenter.clearCache();
+                            }
+                        })
+                        .setNegativeButton(R.string.common_cancel, null)
+                        .show();
+            }
+        });
+
         presenter.load();
     }
 
@@ -151,6 +170,11 @@ public class SettingsActivity extends Activity implements SettingsView {
     @Override
     public void renderVersion(String versionName, int versionCode) {
         tvVersion.setText(getString(R.string.settings_version, versionName, versionCode));
+    }
+
+    @Override
+    public void renderCacheSize(String text) {
+        btnClearCache.setText(getString(R.string.settings_clear_cache_size, text));
     }
 
     @Override

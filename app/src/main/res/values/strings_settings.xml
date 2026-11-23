@@ -7,6 +7,11 @@
     <string name="settings_adult_prompt">Enter password to enable 18+ content:</string>
     <string name="settings_wrong_password">Wrong password</string>
     <string name="settings_check_update">Check for updates</string>
+    <string name="settings_clear_cache">Clear cache</string>
+    <string name="settings_clear_cache_size">Clear cache (%1$s)</string>
+    <string name="settings_clear_cache_title">Clear cache</string>
+    <string name="settings_clear_cache_message">Remove cached images and temporary files?</string>
+    <string name="settings_clear_cache_confirm">Clear</string>
     <string name="settings_logout">Logout</string>
     <string name="settings_logged_out">Logged out</string>
     <string name="settings_changelog">Changelog</string>
