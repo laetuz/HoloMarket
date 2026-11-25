@@ -22,6 +22,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
+      - name: Seed signing keystore
+        run: |
+          if [ -z "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "KEYSTORE_BASE64 secret is not set; refusing to build an unstably signed release." >&2
+            exit 1
+          fi
+          mkdir -p "$HOME/.android"
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > "$HOME/.android/debug.keystore"
+
       - name: Cache Android SDK (API 21)
         id: cache-android-sdk
         uses: actions/cache@v6

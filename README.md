@@ -78,6 +78,8 @@ AUTH_BASE_URL
 NEOMETRICS_BASE_URL
 ```
 
+They also seed the signing keystore from the `KEYSTORE_BASE64` secret (base64 of the release keystore): the release workflow **requires** it, while CI only uses it when present (fork PRs fall back to a throwaway key). The keystore uses the standard debug credentials (`androiddebugkey` / `android`), so `assembleRelease` keeps using `signingConfig signingConfigs.debug` — but every release is signed with the same key, so users can update in place.
+
 Release flow:
 
 1. Bump `versionCode` / `versionName` in `app/build.gradle` for a real release.
@@ -85,7 +87,7 @@ Release flow:
 3. `git tag vX.Y.Z && git push origin vX.Y.Z`.
 4. The workflow builds `HoloMarket-vX.Y.Z.apk` and attaches it to the GitHub Release.
 
-> Release APKs are debug-signed for now. A different signing key means installing over an existing build requires uninstalling first; real signing will be added later.
+> Installs signed with an older/throwaway debug key (e.g. `v1.5.1` or earlier CI builds) need a **one-time uninstall** before switching to the stable-key releases; after that, updates install over the previous version.
 
 ## License
 
