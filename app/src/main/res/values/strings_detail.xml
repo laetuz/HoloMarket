@@ -3,6 +3,8 @@
     <string name="detail_title">App Detail</string>
     <string name="detail_open">Open</string>
     <string name="detail_update">Update</string>
+    <string name="detail_uninstall">Uninstall</string>
+    <string name="detail_unable_uninstall">Unable to uninstall the app.</string>
     <string name="detail_read_more">Read more</string>
     <string name="detail_show_less">Show less</string>
     <string name="detail_screenshots">Screenshots:</string>

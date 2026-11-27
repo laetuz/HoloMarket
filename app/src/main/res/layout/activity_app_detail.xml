@@ -110,6 +110,14 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/bt_uninstall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/detail_uninstall"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/tv_detail_desc"
                 android:layout_width="match_parent"

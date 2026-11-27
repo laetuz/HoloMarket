@@ -19,6 +19,8 @@ public interface AppDetailView {
 
     void openApp(String packageName);
 
+    void showUninstallError();
+
     void showNoVersions();
 
     void showNoDownloadLink();

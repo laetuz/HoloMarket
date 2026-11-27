@@ -58,6 +58,8 @@ public class AppDetailPresenterTest {
         DownloadInfo task;
         int cancelCalls;
         String lastCancelledPackage;
+        int uninstallCalls;
+        String lastUninstalledPackage;
 
         TestPresenter(Context context) {
             super(context);
@@ -91,6 +93,12 @@ public class AppDetailPresenterTest {
         void sendCancel(String pkg) {
             cancelCalls++;
             lastCancelledPackage = pkg;
+        }
+
+        @Override
+        void requestUninstall(String pkg) {
+            uninstallCalls++;
+            lastUninstalledPackage = pkg;
         }
     }
 
@@ -293,6 +301,43 @@ public class AppDetailPresenterTest {
 
         assertEquals(1, presenter.cancelCalls);
         assertEquals("pkg", presenter.lastCancelledPackage);
+    }
+
+    // --- uninstall ---
+
+    @Test
+    public void onUninstallClicked_whenInstalled_requestsUninstall() {
+        presenter.installedVersionCode = 5;
+        presenter.load("pkg");
+        presenter.appDetailCallback.onSuccess(DETAIL_JSON);
+
+        presenter.onUninstallClicked();
+
+        assertEquals(1, presenter.uninstallCalls);
+        assertEquals("pkg", presenter.lastUninstalledPackage);
+    }
+
+    @Test
+    public void onUninstallClicked_whenUpdateAvailable_requestsUninstall() {
+        presenter.installedVersionCode = 3;
+        presenter.load("pkg");
+        presenter.appDetailCallback.onSuccess(DETAIL_JSON);
+
+        presenter.onUninstallClicked();
+
+        assertEquals(1, presenter.uninstallCalls);
+        assertEquals("pkg", presenter.lastUninstalledPackage);
+    }
+
+    @Test
+    public void onUninstallClicked_whenNotInstalled_doesNothing() {
+        presenter.installedVersionCode = -1;
+        presenter.load("pkg");
+        presenter.appDetailCallback.onSuccess(DETAIL_JSON);
+
+        presenter.onUninstallClicked();
+
+        assertEquals(0, presenter.uninstallCalls);
     }
 
     // --- lifecycle ---

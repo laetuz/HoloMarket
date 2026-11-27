@@ -30,7 +30,7 @@ Built to solve the TLS/SSL certificate deprecation wall that breaks standard web
 - **Browse apps** by category with paginated feeds and collections
 - **Featured apps** carousels (home + categories)
 - **Search** apps by keyword, or tap a developer to list their apps
-- **App detail** page with screenshots, version history, developer, and install state (Download / Update / Open)
+- **App detail** page with screenshots, version history, developer, install state (Download / Update / Open), and an Uninstall button when the app is installed
 - **Ratings & reviews** — rate an app; update or delete your own review (login required)
 - **APK download** via the downloads manager (`DownloadService`) with progress notifications, cancel, and auto-install
 - **Authentication** (login / register / forgot password) with JWT stored in `SharedPreferences`

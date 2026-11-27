@@ -64,6 +64,7 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
     private TextView tvDownloadProgress;
     private ProgressBar pbDownloadProgress;
     private Button btnDownloadCancel;
+    private Button btUninstall;
     private final List<Button> versionDownloadButtons = new ArrayList<Button>();
     private boolean downloadInProgress = false;
     private RatingBar rbRating;
@@ -111,6 +112,7 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
         tvDownloadProgress = (TextView) findViewById(R.id.tv_download_progress);
         pbDownloadProgress = (ProgressBar) findViewById(R.id.pb_download_progress);
         btnDownloadCancel = (Button) findViewById(R.id.btn_download_cancel);
+        btUninstall = (Button) findViewById(R.id.bt_uninstall);
         tvScreenshotsLabel = (TextView) findViewById(R.id.tv_screenshots_label);
         hsvScreenshots = (HorizontalScrollView) findViewById(R.id.hsv_screenshots);
         llScreenshots = (LinearLayout) findViewById(R.id.ll_screenshots);
@@ -169,6 +171,13 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
             @Override
             public void onClick(View view) {
                 appDetailPresenter.cancelDownload();
+            }
+        });
+
+        btUninstall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                appDetailPresenter.onUninstallClicked();
             }
         });
 
@@ -269,6 +278,7 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
     public void renderInstallState(InstallState state) {
         btDownload.setEnabled(true);
         btDownload.setVisibility(View.VISIBLE);
+        btUninstall.setVisibility(state == InstallState.DOWNLOAD ? View.GONE : View.VISIBLE);
         if (state == InstallState.OPEN) {
             btDownload.setText(R.string.detail_open);
         } else if (state == InstallState.UPDATE) {
@@ -284,6 +294,7 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
         setVersionButtonsEnabled(false);
 
         btDownload.setVisibility(View.GONE);
+        btUninstall.setVisibility(View.GONE);
         llDownloadProgress.setVisibility(View.VISIBLE);
 
         pbDownloadProgress.setIndeterminate(indeterminate);
@@ -343,6 +354,11 @@ public class AppDetailActivity extends Activity implements RatingsView, AppDetai
         } else {
             Toast.makeText(this, R.string.detail_unable_open, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void showUninstallError() {
+        Toast.makeText(this, R.string.detail_unable_uninstall, Toast.LENGTH_SHORT).show();
     }
 
     @Override

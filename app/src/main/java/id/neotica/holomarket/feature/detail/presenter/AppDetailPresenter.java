@@ -1,7 +1,9 @@
 package id.neotica.holomarket.feature.detail.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -167,6 +169,19 @@ public class AppDetailPresenter {
         }
     }
 
+    /**
+     * Uninstall button, shown only while the app is installed.
+     */
+    public void onUninstallClicked() {
+        if (installState == InstallState.DOWNLOAD) {
+            return;
+        }
+        if (packageName == null || packageName.length() == 0) {
+            return;
+        }
+        requestUninstall(packageName);
+    }
+
     private VersionModel latestVersion() {
         if (detail == null) {
             return null;
@@ -240,5 +255,16 @@ public class AppDetailPresenter {
 
     void sendCancel(String pkg) {
         DownloadStarter.cancel(context, pkg);
+    }
+
+    void requestUninstall(String pkg) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + pkg));
+            context.startActivity(intent);
+        } catch (Exception e) {
+            if (view != null) {
+                view.showUninstallError();
+            }
+        }
     }
 }
