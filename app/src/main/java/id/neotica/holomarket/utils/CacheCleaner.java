@@ -1,7 +1,7 @@
 package id.neotica.holomarket.utils;
 
 import android.content.Context;
-import android.os.Build;
+import android.os.Environment;
 import android.text.format.Formatter;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -11,6 +11,9 @@ import java.io.File;
 /**
  * Clears the app cache, including the UIL image/icon memory and disk caches.
  * Never touches SharedPreferences, downloaded APKs, or crash logs.
+ *
+ * <p>Uses the manual {@code Android/data/<pkg>/cache} path instead of
+ * {@code Context.getExternalCacheDir()} (API 8) so the class verifies on Android 1.6.
  */
 public final class CacheCleaner {
 
@@ -24,30 +27,27 @@ public final class CacheCleaner {
         }
 
         deleteChildren(context.getCacheDir());
-
-        if (Build.VERSION.SDK_INT >= 8) {
-            try {
-                deleteChildren(context.getExternalCacheDir());
-            } catch (Throwable t) {
-                // External cache unavailable.
-            }
-        }
+        deleteChildren(externalCacheDir(context));
     }
 
     public static long size(Context context) {
-        long total = sizeOf(context.getCacheDir());
-        if (Build.VERSION.SDK_INT >= 8) {
-            try {
-                total += sizeOf(context.getExternalCacheDir());
-            } catch (Throwable t) {
-                // External cache unavailable.
-            }
-        }
-        return total;
+        return sizeOf(context.getCacheDir()) + sizeOf(externalCacheDir(context));
     }
 
     public static String formatSize(Context context, long bytes) {
         return Formatter.formatShortFileSize(context, bytes);
+    }
+
+    private static File externalCacheDir(Context context) {
+        try {
+            if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                return null;
+            }
+            File dataDir = new File(new File(Environment.getExternalStorageDirectory(), "Android"), "data");
+            return new File(new File(dataDir, context.getPackageName()), "cache");
+        } catch (Throwable t) {
+            return null;
+        }
     }
 
     private static long sizeOf(File file) {

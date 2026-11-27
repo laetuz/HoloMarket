@@ -114,6 +114,19 @@ public class DownloadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        return handleIntent(intent);
+    }
+
+    /**
+     * API level 4 and below deliver service starts here instead of {@link #onStartCommand}.
+     */
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onStart(Intent intent, int startId) {
+        handleIntent(intent);
+    }
+
+    private int handleIntent(Intent intent) {
         if (intent == null) {
             return START_NOT_STICKY;
         }

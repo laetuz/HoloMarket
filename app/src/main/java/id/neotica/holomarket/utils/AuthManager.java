@@ -2,7 +2,6 @@ package id.neotica.holomarket.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Base64;
 
 import org.json.JSONObject;
 
@@ -103,7 +102,8 @@ public class AuthManager {
         try {
             String[] parts = token.split("\\.");
             if (parts.length < 2) return null;
-            byte[] decoded = Base64.decode(parts[1], Base64.URL_SAFE);
+            byte[] decoded = Base64Url.decode(parts[1]);
+            if (decoded == null) return null;
             String json = new String(decoded, "UTF-8");
             JSONObject payload = new JSONObject(json);
             if (payload.has("sub")) return payload.optString("sub");

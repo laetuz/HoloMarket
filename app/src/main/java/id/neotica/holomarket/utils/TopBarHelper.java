@@ -32,7 +32,7 @@ public class TopBarHelper {
                 btnBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        activity.onBackPressed();
+                        activity.finish();
                     }
                 });
             } else {

@@ -90,6 +90,23 @@ public class AuthManagerTest {
     }
 
     @Test
+    public void getUsernameFromToken_decodesJwtPayload() {
+        when(mockPrefs.getString("username", null)).thenReturn(null);
+        when(mockPrefs.getString("jwt_token", null))
+                .thenReturn("header.eyJzdWIiOiJqb2huIn0.signature");
+
+        assertEquals("john", auth.getUsernameFromToken());
+    }
+
+    @Test
+    public void getUsernameFromToken_invalidPayload_returnsNull() {
+        when(mockPrefs.getString("username", null)).thenReturn(null);
+        when(mockPrefs.getString("jwt_token", null)).thenReturn("header.not-base64!.signature");
+
+        assertNull(auth.getUsernameFromToken());
+    }
+
+    @Test
     public void adultContent_disabledByDefault() {
         when(mockPrefs.getBoolean("adult_content_enabled", false)).thenReturn(false);
         assertFalse(auth.isAdultContentEnabled());
