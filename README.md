@@ -67,7 +67,7 @@ NEOMETRICS_BASE_URL
 ## CI / Releasing
 
 - **CI** (`.github/workflows/ci.yml`) — builds a debug APK and runs the unit tests on pushes and pull requests to `main`/`master`. The APK is uploaded as a workflow artifact.
-- **Release** (`.github/workflows/release.yml`) — runs on `v*` tags and via manual dispatch. It builds a release APK, verifies the signature, uploads an artifact, and attaches `HoloMarket-<tag>.apk` to the GitHub Release. Tags of the form `v<versionName>.<suffix>` (e.g. `v1.5.0.1`) are accepted as test builds and published as **prereleases**.
+- **Release** (`.github/workflows/release.yml`) — runs on `v*` tags and via manual dispatch. It builds a release APK, verifies the signature, uploads an artifact, and attaches `HoloMarket-<tag>.apk` to the GitHub Release. Tags of the form `v<versionName>.<suffix>` (e.g. `v1.5.0.1`) and four-component versions (e.g. `v1.5.1.2`) are published as **prereleases**.
 
 Both workflows inject `local.properties` from repository secrets (Settings → Secrets and variables → Actions), using bare URLs without quotes:
 

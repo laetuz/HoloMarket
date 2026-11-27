@@ -79,6 +79,12 @@ jobs:
               echo "Tag v$TAG does not match versionName $VERSION." >&2
               exit 1
             fi
+            case "$TAG" in
+              *.*.*.*)
+                echo "Tag v$TAG has four version components; publishing as a prerelease."
+                PRERELEASE=true
+                ;;
+            esac
             SUFFIX="$GITHUB_REF_NAME"
           fi
 
