@@ -19,7 +19,6 @@ public final class CacheCleaner {
     public static void clear(Context context) {
         try {
             ImageLoader.getInstance().clearMemoryCache();
-            ImageLoader.getInstance().clearDiskCache();
         } catch (Throwable t) {
             // UIL not initialized — nothing else to clear there.
         }

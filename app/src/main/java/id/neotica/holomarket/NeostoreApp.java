@@ -21,9 +21,9 @@ public class NeostoreApp extends Application {
         CrashCatcher.init(this);
 
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .showImageOnLoading(android.R.drawable.ic_menu_gallery)
+                .cacheInMemory()
+                .cacheOnDisc()
+                .showStubImage(android.R.drawable.ic_menu_gallery)
                 .showImageForEmptyUri(android.R.drawable.sym_def_app_icon)
                 .showImageOnFail(android.R.drawable.ic_delete)
                 .build();

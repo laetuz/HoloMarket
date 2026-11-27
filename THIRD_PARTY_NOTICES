@@ -10,7 +10,7 @@ Bundled in the distributed application
 --------------------------------------
 
 1. Universal Image Loader
-   com.nostra13.universalimageloader:universal-image-loader:1.9.5
+   com.nostra13.universalimageloader:universal-image-loader:1.8.2
    Copyright (c) Sergey Tarasevich
    Licensed under the Apache License, Version 2.0
    http://www.apache.org/licenses/LICENSE-2.0
