@@ -35,7 +35,7 @@ public final class CacheCleaner {
     }
 
     public static String formatSize(Context context, long bytes) {
-        return Formatter.formatShortFileSize(context, bytes);
+        return Formatter.formatFileSize(context, bytes);
     }
 
     private static File externalCacheDir(Context context) {
